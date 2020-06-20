@@ -1,0 +1,7 @@
+{
+  "name": "boardBuilder",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
