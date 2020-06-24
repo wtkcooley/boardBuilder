@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "boardBuilder",
+  "appId": "com.williamtcooley.boardBuilder",
+  "appName": "Board Builder",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",

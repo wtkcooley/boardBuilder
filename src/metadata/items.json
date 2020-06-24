@@ -1,0 +1,33 @@
+[
+  [
+    {
+      "id": 1,
+      "name": "Baker Brand Logo Skateboard Deck - White",
+      "brand": "Baker Skateboards",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/61zYVra%2BmEL._AC_SL1500_.jpg",
+      "width": 8.12,
+      "length": 31.5,
+      "grip-tape": false,
+      "info": "Baker Skateboards Brand Logo Red/White Skateboard Deck - 8.12\" x 31.5\"",
+      "link": "https://www.amazon.com/Baker-Skateboards-Brand-White-Skateboard/dp/B07WKVBHTK/",
+      "price": 54.95
+    },
+    {
+      "id": 2,
+      "name": "Bamboo Skateboards Blank Skateboard Deck",
+      "brand": "Bamboo Skateboard",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/61dG7US7JsL._AC_SL1200_.jpg",
+      "width": 8.0,
+      "length": 31.5,
+      "grip-tape": false,
+      "info": "Baker Brand Logo Skateboard Deck - Black/White - 8.00",
+      "link": "https://www.amazon.com/Baker-Brand-Logo-Skateboard-Deck/dp/B085PSNT66/",
+      "price": 79.95
+    }
+  ],
+  [],
+  [],
+  [],
+  [],
+  []
+]
