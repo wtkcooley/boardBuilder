@@ -11,7 +11,8 @@ import './BoardBuilder.css';
 import {addCircleOutline} from "ionicons/icons";
 import {Plugins} from "@capacitor/core";
 
-import {Build, build} from "../../metadata/itemInfo";
+import {Bearings, Build, build, Deck, Extras, Hardware, Trucks, Wheels} from "../../metadata/itemInfo";
+import eventSubscription from "../../services/eventSubscription";
 
 interface Props {
 
@@ -19,6 +20,12 @@ interface Props {
 
 interface State {
     name: string
+    deck: Deck
+    trucks: Trucks
+    wheels: Wheels
+    bearings: Bearings
+    hardware: Hardware
+    extras: Extras
     isLoading: boolean
 }
 
@@ -28,25 +35,105 @@ class BoardBuilder extends React.Component<Props, State> {
 
         this.state = {
             name: "New Board",
-            isLoading: true
+            isLoading: true,
+            deck: {
+                id: null,
+                name: null,
+                brand: null,
+                image: null,
+                width: null,
+                length: null,
+                'grip-tape':  null,
+                info: null,
+                price: null,
+                link: null
+            },
+            trucks: {
+                id: null,
+                name: null,
+                brand: null,
+                image: null,
+                width: null,
+                info: null,
+                price: null,
+                link: null
+            },
+            wheels: {
+                id: null,
+                name: null,
+                brand: null,
+                image: null,
+                diameter: null,
+                durometer: null,
+                info: null,
+                price: null,
+                link: null
+            },
+            bearings: {
+                id: null,
+                name: null,
+                brand: null,
+                image: null,
+                abec: null,
+                info: null,
+                price:  null,
+                link: null
+            },
+            hardware: {
+                id: null,
+                name: null,
+                brand: null,
+                image: null,
+                length: null,
+                info: null,
+                price:  null,
+                link: null
+            },
+            extras: {
+                id: null,
+                name: null,
+                brand: null,
+                image: null,
+                info: null,
+                price:  null,
+                link: null
+            }
         }
 
         this.handleNameChange.bind(this);
 
+        eventSubscription.get().onSubEvent("updateComponents", () => {
+            this.setState({
+                isLoading: true
+            })
+            this.checkBuild()
+        })
         this.checkBuild();
     }
 
     async checkBuild () {
-        const currentBuild = await Plugins.Storage.get({key: "currentBuild"}).then(resp => resp.value)
+        console.log("Updating components")
+        let currentBuild = await Plugins.Storage.get({key: "currentBuild"})
+            .then(resp => resp.value)
+
         if (currentBuild === "New Board") {
             const build = new Build(this.state.name);
             await Plugins.Storage.set({
                 key: "currentBuild", value: JSON.stringify(build)
-            }).then(() => {
-                this.setState({
-                    isLoading: false
-                })
             })
+        } else {
+            if (currentBuild != null){
+                let temp = JSON.parse(currentBuild);
+                temp = temp._build;
+                this.setState({
+                    deck: temp.deck,
+                    trucks: temp.trucks,
+                    wheels: temp.wheels,
+                    bearings: temp.bearings,
+                    hardware: temp.hardware,
+                    extras: temp.extras
+                })
+            }
         }
         this.setState({
             isLoading: false
@@ -108,10 +195,31 @@ class BoardBuilder extends React.Component<Props, State> {
         }]
         let items: any = []
         for (let i = 0; i < components.length; i++) {
+            let returnValue: string | null = null;
+            switch (components[i].name) {
+                case "Deck":
+                    returnValue = this.state.deck.name
+                    break;
+                case "Trucks":
+                    returnValue = this.state.trucks.name
+                    break;
+                case "Wheels":
+                    returnValue = this.state.wheels.name
+                    break;
+                case "Bearings":
+                    returnValue = this.state.bearings.name
+                    break;
+                case "Hardware":
+                    returnValue = this.state.hardware.name
+                    break;
+                case "Extras":
+                    returnValue = this.state.extras.name
+                    break;
+            }
             items[i] =
                 (<IonItem routerLink={components[i].link} key={i.toString()}>
-                    <IonLabel>
-                        {components[i].name}
+                    <IonLabel className="ion-text-wrap">
+                        {components[i].name}: {returnValue ? returnValue : "Not selected"}
                     </IonLabel>
                     <IonIcon slot="end" icon={addCircleOutline}/>
                 </IonItem>)
