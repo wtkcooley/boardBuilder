@@ -12,10 +12,10 @@ import {
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
-    IonCardContent
+    IonCardContent, IonReorderGroup, IonItem
 } from '@ionic/react';
 import {add} from 'ionicons/icons'
-import React from 'react';
+import React, {CSSProperties} from 'react';
 
 //style
 import './Home.css';
@@ -24,14 +24,15 @@ import './Home.css';
 import {Plugins} from "@capacitor/core";
 
 //interfaces
-import {buildsObject, build} from "../../metadata/itemInfo";
+import {buildsObject, build, Build} from "../../metadata/itemInfo";
+import eventSubscription from "../../services/eventSubscription";
 
 const node = require("../../metadata/items.json");
 
 
 
 interface Props {
-
+    history: any
 }
 
 interface State {
@@ -48,24 +49,41 @@ class Home extends React.Component<Props, State> {
             isLoading: true
         };
 
-        Plugins.Storage.set({key: "currentBuild", value: ""});
+        eventSubscription.get().onSubEvent("updateHome", () => {
+            this.setState({
+                isLoading: true
+            })
 
-        Plugins.Storage.get({key: "builds"}).then(resp => {
-            if (typeof resp.value === 'string')
+            this.updateBoards();
+        });
+
+        this.updateBoards();
+    }
+
+    async updateBoards () {
+        await Plugins.Storage.set({key: "currentBuild", value: ""});
+
+        await Plugins.Storage.get({key: "builds"}).then(resp => {
+            if (resp.value != null)
                 return JSON.parse(resp.value);
             else
                 throw new Error("No boards to load");
         }).then((resp: buildsObject) => {
-            return (resp.builds.map((build: build) => {
-                return (<IonCard>
-                    <img src={build.deck.image ? build.deck.image : undefined} alt={build.name ? build.name : undefined}/>
-                    <IonCardHeader>
-                        <IonCardSubtitle/>
-                        <IonCardTitle>{build.name}</IonCardTitle>
-                    </IonCardHeader>
-                    <IonCardContent>
-                    </IonCardContent>
-                </IonCard>);
+            console.log(resp)
+            return (resp.builds.map((build: any) => {
+                const backgroundImage: CSSProperties = {
+                    backgroundImage: `url(${build.deck.image})`
+                }
+                return (
+                <IonItem className="component" routerDirection="forward" /*onClick={e => this.handleCardClick(e, deck)}*/ button={true}>
+                    <div className="img-container" style={backgroundImage}>
+                    </div>
+                    <div className="text-container">
+                        <h1>
+                            {build.name}
+                        </h1>
+                    </div>
+                </IonItem>);
             }))
         }).then(resp => {
             this.setState({
@@ -73,8 +91,15 @@ class Home extends React.Component<Props, State> {
                 isLoading: false
             });
         }).catch(e => {
+            const buildsObject: buildsObject = {
+                builds: []
+            }
+            Plugins.Storage.set({
+                key: "builds",
+                value: JSON.stringify(buildsObject)
+            })
             this.setState({
-                isLoading:false
+                isLoading: false
             });
             console.log(e);
         })
@@ -82,6 +107,8 @@ class Home extends React.Component<Props, State> {
 
     handleNewBoard() {
         Plugins.Storage.set({key: "currentBuild", value: "New Board"});
+        eventSubscription.get().emitEvent('updateBoardBuilder');
+        this.props.history.push('/boardbuilder')
     }
 
     render() {
@@ -101,8 +128,11 @@ class Home extends React.Component<Props, State> {
                                 <IonTitle size="large">Board Builder</IonTitle>
                             </IonToolbar>
                         </IonHeader>
+                        <IonReorderGroup>
+                            {this.state.boards}
+                        </IonReorderGroup>
                         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-                            <IonFabButton onClick={() => this.handleNewBoard()} routerLink={"/boardbuilder"}>
+                            <IonFabButton onClick={() => this.handleNewBoard()}>
                                 <IonIcon icon={add}/>
                             </IonFabButton>
                         </IonFab>

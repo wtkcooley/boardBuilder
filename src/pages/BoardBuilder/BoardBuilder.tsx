@@ -11,11 +11,11 @@ import './BoardBuilder.css';
 import {addCircleOutline} from "ionicons/icons";
 import {Plugins} from "@capacitor/core";
 
-import {Bearings, Build, build, Deck, Extras, Hardware, Trucks, Wheels} from "../../metadata/itemInfo";
+import {Bearings, Build, build, buildsObject, Deck, Extras, Hardware, Trucks, Wheels} from "../../metadata/itemInfo";
 import eventSubscription from "../../services/eventSubscription";
 
 interface Props {
-
+    history: any
 }
 
 interface State {
@@ -43,7 +43,7 @@ class BoardBuilder extends React.Component<Props, State> {
                 image: null,
                 width: null,
                 length: null,
-                'grip-tape':  null,
+                'grip-tape': null,
                 info: null,
                 price: null,
                 link: null
@@ -76,7 +76,7 @@ class BoardBuilder extends React.Component<Props, State> {
                 image: null,
                 abec: null,
                 info: null,
-                price:  null,
+                price: null,
                 link: null
             },
             hardware: {
@@ -86,7 +86,7 @@ class BoardBuilder extends React.Component<Props, State> {
                 image: null,
                 length: null,
                 info: null,
-                price:  null,
+                price: null,
                 link: null
             },
             extras: {
@@ -95,14 +95,14 @@ class BoardBuilder extends React.Component<Props, State> {
                 brand: null,
                 image: null,
                 info: null,
-                price:  null,
+                price: null,
                 link: null
             }
         }
 
         this.handleNameChange.bind(this);
 
-        eventSubscription.get().onSubEvent("updateComponents", () => {
+        eventSubscription.get().onSubEvent("updateBoardBuilder", () => {
             this.setState({
                 isLoading: true
             })
@@ -111,27 +111,29 @@ class BoardBuilder extends React.Component<Props, State> {
         this.checkBuild();
     }
 
-    async checkBuild () {
+    async checkBuild() {
         console.log("Updating components")
         let currentBuild = await Plugins.Storage.get({key: "currentBuild"})
             .then(resp => resp.value)
-
         if (currentBuild === "New Board") {
-            const build = new Build(this.state.name);
+            let build: any = new Build(this.state.name);
             await Plugins.Storage.set({
                 key: "currentBuild", value: JSON.stringify(build)
             })
         } else {
-            if (currentBuild != null){
-                let temp = JSON.parse(currentBuild);
-                temp = temp._build;
+            if (currentBuild != null) {
+                let build = JSON.parse(currentBuild);
+                build = build._build;
+                console.log(build);
                 this.setState({
-                    deck: temp.deck,
-                    trucks: temp.trucks,
-                    wheels: temp.wheels,
-                    bearings: temp.bearings,
-                    hardware: temp.hardware,
-                    extras: temp.extras
+                    name: build.name,
+                    isLoading: true,
+                    deck: build.deck,
+                    trucks: build.trucks,
+                    wheels: build.wheels,
+                    bearings: build.bearings,
+                    hardware: build.hardware,
+                    extras: build.extras
                 })
             }
         }
@@ -141,7 +143,8 @@ class BoardBuilder extends React.Component<Props, State> {
     }
 
     async handleNameChange(e: any) {
-        e.preventDefault();;
+        console.log('here')
+        e.preventDefault();
         this.setState({
             name: e.target.value
         });
@@ -154,7 +157,7 @@ class BoardBuilder extends React.Component<Props, State> {
             if (build != null) {
                 let temp = build;
                 temp._build.name = e.target.value;
-                return temp
+                return temp;
             }
         }).then(newBuild => {
             Plugins.Storage.set({
@@ -165,7 +168,38 @@ class BoardBuilder extends React.Component<Props, State> {
         Plugins.Storage.get({
             key: "currentBuild"
         }).then(resp => resp.value)
-        .then(build => console.log(build))
+            .then(build => console.log(build))
+    }
+
+    async handleBackButton(e: any) {
+        e.preventDefault();
+        Plugins.Storage.get({
+            key: "builds"
+        }).then(resp => resp.value)
+            .then(value => {
+                if (value != null)
+                    return JSON.parse(value)
+            }).then(async (buildsObject: buildsObject) => {
+            if (buildsObject != null) {
+                let temp = buildsObject;
+                const newBuild = await Plugins.Storage.get({
+                    key: "currentBuild"
+                }).then(resp => {
+                    if (resp.value != null)
+                        return JSON.parse(resp.value)
+                }).then(json => json._build);
+                temp.builds.push(newBuild);
+                return temp;
+            }
+        }).then(async buildsObject => {
+            await Plugins.Storage.set({
+                key: "builds",
+                value: JSON.stringify(buildsObject)
+            })
+        }).then(() => {
+            eventSubscription.get().emitEvent("updateHome");
+            this.props.history.push('/home');
+        })
     }
 
     render() {
@@ -173,26 +207,26 @@ class BoardBuilder extends React.Component<Props, State> {
             name: "Deck",
             link: "/decks"
         },
-        {
-            name: "Trucks",
-            link: "/trucks"
-        },
-        {
-            name: "Wheels",
-            link: "/trucks"
-        },
-        {
-            name: "Bearings",
-            link: "/bearings"
-        },
-        {
-            name: "Hardware",
-            link: "/hardware"
-        },
-        {
-            name: "Extras",
-            link: "/extras"
-        }]
+            {
+                name: "Trucks",
+                link: "/trucks"
+            },
+            {
+                name: "Wheels",
+                link: "/trucks"
+            },
+            {
+                name: "Bearings",
+                link: "/bearings"
+            },
+            {
+                name: "Hardware",
+                link: "/hardware"
+            },
+            {
+                name: "Extras",
+                link: "/extras"
+            }]
         let items: any = []
         for (let i = 0; i < components.length; i++) {
             let returnValue: string | null = null;
@@ -224,7 +258,7 @@ class BoardBuilder extends React.Component<Props, State> {
                     <IonIcon slot="end" icon={addCircleOutline}/>
                 </IonItem>)
         }
-        if(this.state.isLoading) {
+        if (this.state.isLoading) {
             return (
                 <div className={"loader-container"}>
                     <div className={"loader"}/>
@@ -235,8 +269,10 @@ class BoardBuilder extends React.Component<Props, State> {
                     <IonHeader>
                         <IonToolbar>
                             <div className="toolbar-container">
-                                <IonInput placeholder="New Board" onIonChange={(e) => this.handleNameChange(e)} className="md title-default hydrated"/>
-                                <IonButton routerDirection="back" routerLink="/home">Back</IonButton>
+                                <IonInput placeholder={this.state.name} onIonChange={(e) => this.handleNameChange(e)}
+                                          className="md title-default hydrated"/>
+                                <IonButton routerDirection="back" onClick={(e) => this.handleBackButton(e)}
+                                           routerLink="/home">Back</IonButton>
                             </div>
                         </IonToolbar>
                     </IonHeader>

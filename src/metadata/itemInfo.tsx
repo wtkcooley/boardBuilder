@@ -86,7 +86,7 @@ export interface build {
 }
 
 export interface buildsObject {
-    builds: []
+    builds: Build[]
 }
 
 export class Build {
@@ -158,6 +158,10 @@ export class Build {
                 link: null
             }
         }
+    };
+
+    getBuild = () => {
+        return this._build
     };
 
     getName = () => {

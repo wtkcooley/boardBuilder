@@ -52,6 +52,7 @@ class Decks extends React.Component<Props, State> {
         }).then(build => {
             if (build != null) {
                 let temp = build;
+                //figure out why .getBuild doesn't work
                 temp._build.deck = deck;
                 return temp;
             }
@@ -61,7 +62,7 @@ class Decks extends React.Component<Props, State> {
                 value: JSON.stringify(newBuild)
             })
         }).then(() => {
-            eventSubscription.get().emitEvent("updateComponents");
+            eventSubscription.get().emitEvent("updateBoardBuilder");
             this.props.history.push('/boardbuilder');
         })
     }
@@ -71,22 +72,9 @@ class Decks extends React.Component<Props, State> {
             const backgroundImage: CSSProperties = {
                 backgroundImage: `url(${deck.image})`
             }
-            return (/*<IonCard routerDirection="back" onClick={e => this.handleCardClick(e, deck)} button={true}>
-                <img src={deck.image ? deck.image : undefined}
-                     alt={deck.name != null ? deck.name : "Image not available"}/>
-                <IonCardHeader>
-                    <IonCardSubtitle>{deck.brand}</IonCardSubtitle>
-                    <IonCardTitle>{deck.name}</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                    {deck.info}
-                </IonCardContent>
-            </IonCard>*/
-
+            return (
                 <IonItem className="component" routerDirection="back" onClick={e => this.handleCardClick(e, deck)} button={true}>
                     <div className="img-container" style={backgroundImage}>
-                        {/*<img src={deck.image ? deck.image : undefined}
-                         alt={deck.name != null ? deck.name : "Image not available"}/>*/}
                     </div>
                     <div className="text-container">
                         <h6>
@@ -99,7 +87,6 @@ class Decks extends React.Component<Props, State> {
                             {deck.info}
                         </p>
                     </div>
-
                 </IonItem>
             )
         })
