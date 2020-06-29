@@ -12,9 +12,9 @@ import {
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
-    IonCardContent, IonReorderGroup, IonItem
+    IonCardContent, IonReorderGroup, IonItem, IonButtons, IonReorder
 } from '@ionic/react';
-import {add} from 'ionicons/icons'
+import {add, createOutline, trashOutline} from 'ionicons/icons'
 import React, {CSSProperties} from 'react';
 
 //style
@@ -27,10 +27,6 @@ import {Plugins} from "@capacitor/core";
 import {buildsObject, build, Build} from "../../metadata/itemInfo";
 import eventSubscription from "../../services/eventSubscription";
 
-const node = require("../../metadata/items.json");
-
-
-
 interface Props {
     history: any
 }
@@ -38,6 +34,7 @@ interface Props {
 interface State {
     boards: any,
     isLoading: boolean
+    isEditing: boolean
 }
 
 class Home extends React.Component<Props, State> {
@@ -46,7 +43,8 @@ class Home extends React.Component<Props, State> {
 
         this.state = {
             boards: [],
-            isLoading: true
+            isLoading: true,
+            isEditing: false
         };
 
         eventSubscription.get().onSubEvent("updateHome", () => {
@@ -60,7 +58,7 @@ class Home extends React.Component<Props, State> {
         this.updateBoards();
     }
 
-    async updateBoards () {
+    async updateBoards() {
         await Plugins.Storage.set({key: "currentBuild", value: ""});
 
         await Plugins.Storage.get({key: "builds"}).then(resp => {
@@ -70,21 +68,27 @@ class Home extends React.Component<Props, State> {
                 throw new Error("No boards to load");
         }).then((resp: buildsObject) => {
             console.log(resp)
-            return (resp.builds.map((build: any) => {
+            return resp.builds.map((build: any) => {
                 const backgroundImage: CSSProperties = {
                     backgroundImage: `url(${build.deck.image})`
                 }
                 return (
-                <IonItem className="component" routerDirection="forward" /*onClick={e => this.handleCardClick(e, deck)}*/ button={true}>
-                    <div className="img-container" style={backgroundImage}>
-                    </div>
-                    <div className="text-container">
-                        <h1>
-                            {build.name}
-                        </h1>
-                    </div>
-                </IonItem>);
-            }))
+                    <IonItem className="component"
+                             routerDirection="forward" /*onClick={e => this.handleCardClick(e, build)}*/
+                             button={true}>
+                        <div className="img-container" style={backgroundImage}/>
+                        <div className="text-container">
+                            <h1>
+                                {build.name}
+                            </h1>
+                        </div>
+                        <IonButton slot="end" onClick={(e) => this.deleteBoard(e, build.name)}
+                                   hidden={!this.state.isEditing}>
+                            <IonIcon icon={trashOutline}/>
+                        </IonButton>
+                        <IonReorder slot="end"/>
+                    </IonItem>);
+            })
         }).then(resp => {
             this.setState({
                 boards: resp,
@@ -105,10 +109,54 @@ class Home extends React.Component<Props, State> {
         })
     }
 
-    handleNewBoard() {
-        Plugins.Storage.set({key: "currentBuild", value: "New Board"});
+    async handleNewBoard(e: any) {
+        e.preventDefault();
+        await Plugins.Storage.set({key: "currentBuild", value: "New Board"});
         eventSubscription.get().emitEvent('updateBoardBuilder');
         this.props.history.push('/boardbuilder')
+    }
+
+    async handleToggle(e: any) {
+        e.preventDefault();
+        this.setState({
+            isEditing: !this.state.isEditing
+        })
+        await this.updateBoards()
+    }
+
+    async doReorder(event: any) {
+        // The `from` and `to` properties contain the index of the item
+        // when the drag started and ended, respectively
+        console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
+
+        // Finish the reorder and position the item in the DOM based on
+        // where the gesture ended. This method can also be called directly
+        // by the reorder group
+        event.detail.complete();
+    }
+
+    async deleteBoard(e: any, name: string) {
+        e.preventDefault()
+        Plugins.Storage.get({
+            key: "builds"
+        }).then(resp => {
+            if (resp.value != null)
+                return JSON.parse(resp.value)
+        }).then((buildsObject: buildsObject) => {
+            console.log(buildsObject)
+            if (buildsObject != null) {
+                let temp = buildsObject;
+                temp.builds = temp.builds.filter(build => {
+                    return build.name != name
+                });
+                return temp;
+            }
+        }).then(async buildsObject => {
+            await Plugins.Storage.set({
+                key: "builds",
+                value: JSON.stringify(buildsObject)
+            })
+        }).then(() => this.updateBoards())
     }
 
     render() {
@@ -120,19 +168,29 @@ class Home extends React.Component<Props, State> {
                     <IonHeader>
                         <IonToolbar>
                             <IonTitle>Board Builder</IonTitle>
+                            <IonButtons slot="end">
+                                <IonButton slot="icon-only" onClick={(e) => this.handleToggle(e)}>
+                                    <IonIcon icon={createOutline}/>
+                                </IonButton>
+                            </IonButtons>
                         </IonToolbar>
                     </IonHeader>
                     <IonContent>
                         <IonHeader collapse="condense">
                             <IonToolbar>
-                                <IonTitle size="large">Board Builder</IonTitle>
+                                <IonTitle>Board Builder</IonTitle>
+                                <IonButtons slot="end">
+                                    <IonButton slot="icon-only" onClick={(e) => this.handleToggle(e)}>
+                                        <IonIcon icon={createOutline}/>
+                                    </IonButton>
+                                </IonButtons>
                             </IonToolbar>
                         </IonHeader>
-                        <IonReorderGroup>
+                        <IonReorderGroup disabled={!this.state.isEditing} onIonItemReorder={this.doReorder}>
                             {this.state.boards}
                         </IonReorderGroup>
                         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-                            <IonFabButton onClick={() => this.handleNewBoard()}>
+                            <IonFabButton onClick={(e) => this.handleNewBoard(e)}>
                                 <IonIcon icon={add}/>
                             </IonFabButton>
                         </IonFab>

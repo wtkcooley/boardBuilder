@@ -86,11 +86,11 @@ export interface build {
 }
 
 export interface buildsObject {
-    builds: Build[]
+    builds: build[]
 }
 
 export class Build {
-    private _build: build
+    public _build: build
 
     constructor(name: string) {
         this._build = {
