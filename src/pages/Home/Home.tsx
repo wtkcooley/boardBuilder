@@ -67,14 +67,16 @@ class Home extends React.Component<Props, State> {
             else
                 throw new Error("No boards to load");
         }).then((resp: buildsObject) => {
-            console.log(resp)
             return resp.builds.map((build: any) => {
                 const backgroundImage: CSSProperties = {
                     backgroundImage: `url(${build.deck.image})`
                 }
                 return (
                     <IonItem className="component"
-                             routerDirection="forward" /*onClick={e => this.handleCardClick(e, build)}*/
+                             routerDirection="forward" onClick={e => {
+                                 if (!this.state.isEditing)
+                                     this.handleEditBoard(e, build)
+                             }}
                              button={true}>
                         <div className="img-container" style={backgroundImage}/>
                         <div className="text-container">
@@ -109,11 +111,18 @@ class Home extends React.Component<Props, State> {
         })
     }
 
+    async handleEditBoard(e: any, build: any) {
+        e.preventDefault();
+        await Plugins.Storage.set({key: "currentBuild", value: JSON.stringify(build)});
+        eventSubscription.get().emitEvent('updateBoardBuilder');
+        this.props.history.push('/boardbuilder');
+    }
+
     async handleNewBoard(e: any) {
         e.preventDefault();
         await Plugins.Storage.set({key: "currentBuild", value: "New Board"});
         eventSubscription.get().emitEvent('updateBoardBuilder');
-        this.props.history.push('/boardbuilder')
+        this.props.history.push('/boardbuilder');
     }
 
     async handleToggle(e: any) {
@@ -147,7 +156,7 @@ class Home extends React.Component<Props, State> {
             if (buildsObject != null) {
                 let temp = buildsObject;
                 temp.builds = temp.builds.filter(build => {
-                    return build.name != name
+                    return build.name !== name
                 });
                 return temp;
             }
@@ -200,6 +209,6 @@ class Home extends React.Component<Props, State> {
         }
 
     }
-};
+}
 
 export default Home;

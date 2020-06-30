@@ -23,7 +23,6 @@ import {Deck} from "../../../metadata/itemInfo";
 
 import {Plugins} from "@capacitor/core";
 import eventSubscription from "../../../services/eventSubscription";
-import {url} from "inspector";
 
 const node = require('../../../metadata/items.json');
 
@@ -52,8 +51,7 @@ class Decks extends React.Component<Props, State> {
         }).then(build => {
             if (build != null) {
                 let temp = build;
-                //figure out why .getBuild doesn't work
-                temp._build.deck = deck;
+                temp.deck = deck;
                 return temp;
             }
         }).then(newBuild => {

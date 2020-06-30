@@ -8,7 +8,7 @@ import {
 } from '@ionic/react';
 import React, {FormEvent} from 'react';
 import './BoardBuilder.css';
-import {addCircleOutline} from "ionicons/icons";
+import {addCircleOutline, key} from "ionicons/icons";
 import {Plugins} from "@capacitor/core";
 
 import {Bearings, Build, build, buildsObject, Deck, Extras, Hardware, Trucks, Wheels} from "../../metadata/itemInfo";
@@ -19,7 +19,7 @@ interface Props {
 }
 
 interface State {
-    name: string
+    name: string | null
     deck: Deck
     trucks: Trucks
     wheels: Wheels
@@ -29,6 +29,7 @@ interface State {
     isLoading: boolean
     conflictingName: boolean
     showNameAlert: boolean
+    isEdited: boolean
 }
 
 class BoardBuilder extends React.Component<Props, State> {
@@ -40,6 +41,7 @@ class BoardBuilder extends React.Component<Props, State> {
             isLoading: true,
             conflictingName: true,
             showNameAlert: false,
+            isEdited: false,
             deck: {
                 id: null,
                 name: null,
@@ -78,7 +80,6 @@ class BoardBuilder extends React.Component<Props, State> {
                 name: null,
                 brand: null,
                 image: null,
-                abec: null,
                 info: null,
                 price: null,
                 link: null
@@ -123,24 +124,23 @@ class BoardBuilder extends React.Component<Props, State> {
             this.setState({
                 name: "New Board"
             });
-            let build: any = new Build(this.state.name);
+            let build: Build = new Build(this.state.name);
             await Plugins.Storage.set({
-                key: "currentBuild", value: JSON.stringify(build)
+                key: "currentBuild", value: JSON.stringify(build.getBuild())
             })
             this.setState({
-                    name: build.getName(),
-                    isLoading: true,
-                    deck: build.getDeck(),
-                    trucks: build.getTrucks(),
-                    wheels: build.getWheels(),
-                    bearings: build.getBearings(),
-                    hardware: build.getHardware(),
-                    extras: build.getExtras()
+                name: build.getName(),
+                isLoading: true,
+                deck: build.getDeck(),
+                trucks: build.getTrucks(),
+                wheels: build.getWheels(),
+                bearings: build.getBearings(),
+                hardware: build.getHardware(),
+                extras: build.getExtras()
             })
         } else {
             if (currentBuild != null) {
                 let build = JSON.parse(currentBuild);
-                build = build._build;
                 this.setState({
                     name: build.name,
                     isLoading: true,
@@ -152,6 +152,20 @@ class BoardBuilder extends React.Component<Props, State> {
                     extras: build.extras
                 })
             }
+
+            await Plugins.Storage.get({key: "builds"}).then(resp => {
+                if (resp.value != null)
+                    return JSON.parse(resp.value)
+            }).then(async json => {
+                let temp = json;
+                temp.builds = json.builds.filter((build: build) => {
+                    return build.name !== this.state.name
+                })
+                await Plugins.Storage.set({
+                    key: "builds",
+                    value: JSON.stringify(temp)
+                });
+            });
         }
         this.setState({
             isLoading: false
@@ -159,21 +173,20 @@ class BoardBuilder extends React.Component<Props, State> {
     }
 
     async checkName() {
-        await Plugins.Storage.get({key:"builds"}).then(resp => {
+        await Plugins.Storage.get({key: "builds"}).then(resp => {
             if (resp.value != null)
                 return JSON.parse(resp.value)
-        }).then(json => {
+        }).then(async json => {
             const sameNames = json.builds.filter((build: build) => {
                 return build.name === this.state.name
             })
-            console.log(sameNames)
-            if(sameNames.length === 0) {
+            if (sameNames === null || sameNames.length === 0) {
                 this.setState({
                     conflictingName: false
                 })
             } else {
                 this.setState({
-                    conflictingName: true
+                conflictingName: true
                 })
             }
         })
@@ -192,7 +205,7 @@ class BoardBuilder extends React.Component<Props, State> {
         }).then(build => {
             if (build != null) {
                 let temp = build;
-                temp._build.name = e.target.value;
+                temp.name = e.target.value;
                 return temp;
             }
         }).then(newBuild => {
@@ -210,7 +223,7 @@ class BoardBuilder extends React.Component<Props, State> {
     async handleBackButton(e: any) {
         e.preventDefault();
         await this.checkName();
-        if(!this.state.conflictingName) {
+        if (!this.state.conflictingName) {
             Plugins.Storage.get({
                 key: "builds"
             }).then(resp => resp.value)
@@ -225,7 +238,8 @@ class BoardBuilder extends React.Component<Props, State> {
                     }).then(resp => {
                         if (resp.value != null)
                             return JSON.parse(resp.value)
-                    }).then(json => json._build);
+                    })
+                    console.log(newBuild);
                     temp.builds.push(newBuild);
                     return temp;
                 }
@@ -312,7 +326,8 @@ class BoardBuilder extends React.Component<Props, State> {
                     <IonHeader>
                         <IonToolbar>
                             <div className="toolbar-container">
-                                <IonInput placeholder={this.state.name} onIonChange={(e) => this.handleNameChange(e)}
+                                <IonInput placeholder={this.state.name ? this.state.name : "Error"}
+                                          onIonChange={(e) => this.handleNameChange(e)}
                                           className="md title-default hydrated"/>
                                 <IonButton routerDirection="back" onClick={(e) => this.handleBackButton(e)}
                                            routerLink="/home">Back</IonButton>
@@ -321,15 +336,15 @@ class BoardBuilder extends React.Component<Props, State> {
                     </IonHeader>
                     <IonContent>
                         <IonAlert
-                          isOpen={this.state.showNameAlert}
-                          onDidDismiss={() => this.setState({
-                              showNameAlert: false
-                          })}
-                          cssClass=''
-                          header={'Error Saving'}
-                          subHeader={'Conflicting Names'}
-                          message={'It seems that you are attempting to save this build under a name that already exists on this device. To fix this simply change the name to a unique name, so you don\'t accidentally edit or delete the wrong builds'}
-                          buttons={['OK']}
+                            isOpen={this.state.showNameAlert}
+                            onDidDismiss={() => this.setState({
+                                showNameAlert: false
+                            })}
+                            cssClass=''
+                            header={'Error Saving'}
+                            subHeader={'Conflicting Names'}
+                            message={'It seems that you are attempting to save this build under a name that already exists on this device. To fix this simply change the name to a unique name, so you don\'t accidentally edit or delete the wrong builds'}
+                            buttons={['OK']}
                         />
                         <IonList>
                             {items}

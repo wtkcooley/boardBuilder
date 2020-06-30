@@ -39,7 +39,6 @@ export interface Bearings {
     name: string | null
     brand: string | null
     image: string | null
-    abec: number | null
     info: string | null
     price: number | null
     link: string | null
@@ -92,7 +91,7 @@ export interface buildsObject {
 export class Build {
     public _build: build
 
-    constructor(name: string) {
+    constructor(name: string | null) {
         this._build = {
             name,
             deck: {
@@ -133,7 +132,6 @@ export class Build {
                 name: null,
                 brand: null,
                 image: null,
-                abec: null,
                 info: null,
                 price:  null,
                 link: null
@@ -181,11 +179,11 @@ export class Build {
     };
 
     getBearings = () => {
-        return this._build.wheels
+        return this._build.bearings
     };
 
     getHardware = () => {
-        return this._build.bearings
+        return this._build.hardware
     };
 
     getExtras = () => {
