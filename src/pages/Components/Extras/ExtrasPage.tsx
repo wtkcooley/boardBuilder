@@ -17,9 +17,9 @@ import {
     IonCardContent
 } from '@ionic/react';
 import React, {CSSProperties} from 'react';
-import './Decks.css';
+import './ExtrasPage.css';
 import {addCircleOutline, image} from "ionicons/icons";
-import {Deck} from "../../../metadata/itemInfo";
+import {Extras} from "../../../metadata/itemInfo";
 
 import {Plugins} from "@capacitor/core";
 import eventSubscription from "../../../services/eventSubscription";
@@ -34,14 +34,14 @@ interface State {
 
 }
 
-class Decks extends React.Component<Props, State> {
+class ExtrasPage extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
         this.handleCardClick.bind(this);
     }
 
-    async handleCardClick(e: any, deck: Deck) {
+    async handleCardClick(e: any, extras: Extras) {
         e.preventDefault();
         await Plugins.Storage.get({
             key: "currentBuild",
@@ -51,7 +51,7 @@ class Decks extends React.Component<Props, State> {
         }).then(build => {
             if (build != null) {
                 let temp = build;
-                temp.deck = deck;
+                temp.extras = extras;
                 return temp;
             }
         }).then(newBuild => {
@@ -66,23 +66,23 @@ class Decks extends React.Component<Props, State> {
     }
 
     render() {
-        let items = node[0].map((deck: Deck) => {
+        let items = node[5].map((extras: Extras) => {
             const backgroundImage: CSSProperties = {
-                backgroundImage: `url(${deck.image})`
+                backgroundImage: `url(${extras.image})`
             }
             return (
-                <IonItem className="component" routerDirection="back" onClick={e => this.handleCardClick(e, deck)} button={true}>
+                <IonItem className="component" routerDirection="back" onClick={e => this.handleCardClick(e, extras)} button={true}>
                     <div className="img-container" style={backgroundImage}>
                     </div>
                     <div className="text-container">
                         <h6>
-                            {deck.name}
+                            {extras.name}
                         </h6>
                         <p>
-                            {deck.brand}
+                            {extras.brand}
                         </p>
                         <p>
-                            {deck.info}
+                            {extras.info}
                         </p>
                     </div>
                 </IonItem>
@@ -93,7 +93,7 @@ class Decks extends React.Component<Props, State> {
                 <IonHeader>
                     <IonToolbar>
                         <div className="toolbar-container">
-                            <IonTitle className="md title-default hydrated">Decks</IonTitle>
+                            <IonTitle className="md title-default hydrated">Extras</IonTitle>
                             <IonButton routerDirection="back" routerLink="/boardbuilder">Back</IonButton>
                         </div>
                     </IonToolbar>
@@ -108,4 +108,4 @@ class Decks extends React.Component<Props, State> {
     }
 }
 
-export default Decks;
+export default ExtrasPage;

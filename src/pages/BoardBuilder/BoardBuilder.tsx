@@ -261,16 +261,16 @@ class BoardBuilder extends React.Component<Props, State> {
 
     render() {
         const components = [{
-            name: "Deck",
-            link: "/decks"
-        },
+                name: "Deck",
+                link: "/decks"
+            },
             {
                 name: "Trucks",
                 link: "/trucks"
             },
             {
                 name: "Wheels",
-                link: "/trucks"
+                link: "/wheels"
             },
             {
                 name: "Bearings",

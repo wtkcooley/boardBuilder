@@ -1,7 +1,7 @@
 {
   "appId": "com.williamtcooley.boardBuilder",
   "appName": "Board Builder",
-  "bundledWebRuntime": false,
+  "bundledWebRuntime": true,
   "npmClient": "npm",
   "webDir": "build",
   "plugins": {

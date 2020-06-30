@@ -1,0 +1,15 @@
+ion-item .img-container, ion-item .text-container {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 50%;
+    height: 100px;
+}
+
+ion-item .text-container h6 {
+    font-size: 12px;
+}
+
+ion-item .text-container p {
+    font-size: 10px;
+}

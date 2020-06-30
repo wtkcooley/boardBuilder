@@ -25,9 +25,139 @@
       "price": 79.95
     }
   ],
-  [],
-  [],
-  [],
-  [],
-  []
+  [
+    {
+      "id": 3,
+      "name": "INDEPENDENT Skateboard Trucks 129mm Silver Raw STAGE 11 7.75 in PAIR (2 trucks)",
+      "brand": "Independent",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/51Tbomc5myL._AC_.jpg",
+      "width": "129",
+      "info": "Durable, high performance truck for all types of skateboarding. 356 T6 Aluminum hanger and baseplate, solid Chromoly steel axle, grade 8 kingpin, Supercush cushions with cylinder bottom. Featuring superior turn and stability, better grind clearance, improved no hang-up yoke for grind tricks, and less wheel bite. They last longer and are stronger on impact than any other truck on the market. Independent trucks are Made In The USA � Accept No Substitutes. 55mm height, recommended wheel size without riser�56mm and under. Recommended deck size 7.4\" - 8\".",
+      "link": "https://www.amazon.com/INDEPENDENT-Skateboard-Trucks-Silver-trucks/dp/B002R6HO0O/",
+      "price": 65.00
+    },
+    {
+      "id": 4,
+      "name": "Independent 149 Stage 11 Standard Truck, Silver - Pair of 2",
+      "brand": "Independent",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/51m5%2BDvpy0L._AC_SL1000_.jpg",
+      "width": 149,
+      "info": "New Stage 11 standard height trucks are unquestionably the best combination of features and geometry Independent has ever produced\nBy improving the modern performance features and iconic look of our Stage 10 design with newly reworked geometry based on Independent Stages 5-7 Independent has created the new standard to which all other trucks will be judged",
+      "link": "https://www.amazon.com/Independent-Stage-Standard-Truck-Silver/dp/B00ATWMVRY/",
+      "price": 65.00
+    }
+  ],
+  [
+    {
+      "id": 5,
+      "name": "Spitfire Classic Series 54mm High Performance Skateboard Wheel (Set of 4)",
+      "brand": "Spitfire",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/71vka2B5PzL._AC_SL1000_.jpg",
+      "diameter": 54,
+      "durometer": "99A",
+      "info": "True 99 durometer\nHand poured & shaped\n100% made in USA\nGuaranteed against all defects",
+      "link": "https://www.amazon.com/Spitfire-Classic-Performance-Skateboard-Wheel/dp/B001VL99H2/",
+      "price": 39.95
+    },
+    {
+      "id": 6,
+      "name": "Bones Wheels Patterns • STF 103A • 54mm • Standard, White (WSCATST015403W4)",
+      "brand": "Bones",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/71Y4H2xY3EL._AC_SL1500_.jpg",
+      "diameter": 54,
+      "durometer": "103A",
+      "info": "Bones Street Tech Formula powers the legendary Bones STF wheels that roll fast, grip when you need to and slide when you want to, without flat spotting.\nBones STF wheels outperform all other wheels, and because they wear so well, they last several times longer than normal wheels, making STF wheels the best for less.\nBones STF wheels are available in the original STF 103A and the new STF 99A for greater roll, control and softer landings on rougher terrain.\nShape: V1 Standard Formula: STF 103A\nPerfect Balance of Radius Width & Speed for Best All-Around Performance\nSport Type: Skateboarding",
+      "link": "https://www.amazon.com/Bones-Wheels-Patterns-Standard-WSCATST015403W4/",
+      "price": 42.95
+    }
+  ],
+  [
+    {
+      "id": 7,
+      "name": "Bones Reds Skateboard Bearings 8 Pack",
+      "brand": "Bones",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/61fmEI8yaIL._AC_SL1500_.jpg",
+      "info": "Bestselling skate bearing brand in the USA - BONES know interludes the SKATE RATED sticker on most of there packaging to help prove authenticity of the bearings received. If your bearings do not come with this sticker contact bones directly for help.\nSingle, non-contact, removable rubber shield for easy cleaning and less friction; high speed nylon ball retainer for greater strength and speed\nPre-lubricated with Speed Cream racing lubricant\nSkate Rated clearances, tolerances, materials, and lubricant\nIncludes set of eight bearings, instructions, and logo sticker",
+      "link": "https://www.amazon.com/dp/B000FDRQ1S",
+      "price": 17.95
+    },
+    {
+      "id": 8,
+      "name": "Bones Big Balls Reds Skateboard Bearings 8 Pack",
+      "brand": "Bones",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/61LD86m46GL._AC_SL1300_.jpg",
+      "info": "BIG BALLS, the newest member of our REDS family. BIG BALLS are engineered to roll faster and last longer by using 6, 17% larger balls, like our legendary Bones Super Swiss 6 bearings.\nThese larger balls let you roll faster, and keep rolling right through dirt that slows smaller balls down.\nIncludes: Set of 8 bearings, instructions, and sticker.\nHigher top speed, greater strength, longer life, easy cleaning, and light weight.\nSkate Rated design.",
+      "link": "https://www.amazon.com/dp/B07QY4YB8F",
+      "price": 24.95
+    },
+    {
+      "id": 9,
+      "name": "Bones Super Reds Skateboard Bearings 8 Pack",
+      "brand": "Bones",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/71MEJHnQAXL._AC_SL1500_.jpg",
+      "info": "Features Higher quality steel races, better quality and grade balls, and a superior surface finish\nSingle, non-contact, removable rubber shield for easy cleaning and less friction.\nHigh speed nylon ball retainer for greater strength and speed.\nPre-lubricated with Speed Cream racing lubricant\nSkate Rated clearances, tolerances, materials and lubricant provide the best performance and durability possible.",
+      "link": "https://www.amazon.com/dp/B002E2MYSI",
+      "price": 29.95
+    },
+    {
+      "id": 9,
+      "name": "Bones Swiss Skateboard Bearings 8 Pack",
+      "brand": "Bones",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/716p7emxLOL._AC_SL1500_.jpg",
+      "info": "Eight-pack of chromium skateboard wheel bearings with four bearing spacers, instructions, and a sticker\nPrecision-grade Swiss design and manufacturing acclaimed for 25 years\nNylon ball retainers and Bones Speed Cream lubricant for a sustained ride\nRemovable rubber shields make cleaning a snap\nSkate Rated for better performance than any ABEC rated bearings; lifetime warranty against manufacturing defects",
+      "link": "https://www.amazon.com/dp/B000FDQ0D8",
+      "price": 49.94
+    },
+    {
+      "id": 10,
+      "name": "Bones Super Swiss 6 Skateboard Bearings 8 Pack",
+      "brand": "Bones",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/71myu0ZCJtL._AC_SL1500_.jpg",
+      "info": "Unique bearing design with six larger balls of for increased speed, faster acceleration, and greater strength\nSingle, non-contact, removable rubber shield for easy cleaning and less friction; pre-lubricated with Speed Cream\nHigh speed nylon ball retainer for greater strength and speed\nSkate Rated clearances, tolerances, materials\nLifetime warranty against manufacturing defects",
+      "link": "https://www.amazon.com/dp/B000FDQ0E2/",
+      "price": 62.64
+    },
+    {
+      "id": 11,
+      "name": "Bones Swiss Ceramic Skateboard Bearings 8 Pack",
+      "brand": "Bones",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/712XvGAnRdL._AC_SL1500_.jpg",
+      "info": "Eight-pack of premium ceramic skateboard wheel bearings with four bearing spacers, instructions, and a sticker\nCerbec ceramic balls are light, hard, and strong for a long lasting performance\nPrecision-grade Swiss design and manufacturing acclaimed for 25 years\nNylon ball retainers and Bones Speed Cream lubricant for a sustained ride\nSkate Rated for better performance than any ABEC rated bearings; lifetime warranty against manufacturing defects",
+      "link": "https://www.amazon.com/Bones-Swiss-Ceramic-Skateboard-Bearings/dp/B001LF3T3S/",
+      "price": 151.95
+    }
+  ],
+  [
+    {
+      "id": 12,
+      "name": "INDEPENDENT Skateboard Hardware 1\" Phillips Black/Red 8 Nuts and Mounting Bolts",
+      "brand": "Independent",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/61xIk19bNbL._AC_SL1282_.jpg",
+      "length": 1,
+      "info": "Independent Trucks is the #1 choice of professional skateboarders since 1978",
+      "link": "https://www.amazon.com/Independent-Standard-Phillips-Skateboard-Hardware/dp/B07945MD9K",
+      "price": 9.48
+    },
+    {
+      "id": 13,
+      "name": "INDEPENDENT Genuine Parts Phillips Hardware 1 1/4\" Black",
+      "brand": "Independent",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/61oqdk7fd3L._AC_SL1280_.jpg",
+      "length": 1.25,
+      "info": "Genuwine",
+      "link": "https://www.amazon.com/INDEPENDENT-Genuine-Parts-Phillips-Hardware/dp/B004ECVVGC",
+      "price": 7.95
+    }
+  ],
+  [
+    {
+      "id": 14,
+      "name": "Board Blazers LED Underglow Lights for Skateboards, Longboards, Scooters - Original Skateboard Accessories - Great Gift for Skateboarders",
+      "brand": "Board Blazers",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/71xtuQGgeIL._AC_SL1500_.jpg",
+      "info": "NEW IMPROVED CUSTOM ADHESIVE: This brand new industrial grade adhesive is custom designed and manufactured in the USA to keep these LED lights secure.\nSTAY VISIBLE AT NIGHT: Light up the night while riding with these classic skateboard lights. Other people will watch and stare as you glide by!\nRIDE IN STYLE: Attach these skateboard lights to the bottom of your board to instantly light up any skateboard, longboard, roller skates, or scooter!\nDESIGNED FOR TRICKS: Easily attach these LED lights under the skateboard trucks to grind, flip, and cruise at night.\nPERFECT GIFT & BATTERIES INCLUDED: Compatible with skateboards, longboards, roller skates, and scooters! We support our products 100%. Return for any reason, forever! SKATEBOARD NOT INCLUDED",
+      "link": "https://www.amazon.com/Board-Blazers-Underglow-Skateboards-Longboards/dp/B008AJYRRA/",
+      "price": 19.99
+    }
+  ]
 ]
