@@ -12,7 +12,7 @@ import {
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
-    IonCardContent, IonReorderGroup, IonItem, IonButtons, IonReorder
+    IonCardContent, IonReorderGroup, IonItem, IonButtons, IonReorder, IonLoading
 } from '@ionic/react';
 import {add, createOutline, trashOutline} from 'ionicons/icons'
 import React, {CSSProperties} from 'react';
@@ -169,12 +169,20 @@ class Home extends React.Component<Props, State> {
     }
 
     render() {
-        if (this.state.isLoading) {
-            return <></>;
-        } else {
-            return (
-                <IonPage>
-                    <IonHeader>
+        return (
+            <IonPage>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Board Builder</IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton slot="icon-only" onClick={(e) => this.handleToggle(e)}>
+                                <IonIcon icon={createOutline}/>
+                            </IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                    <IonHeader collapse="condense">
                         <IonToolbar>
                             <IonTitle>Board Builder</IonTitle>
                             <IonButtons slot="end">
@@ -184,30 +192,21 @@ class Home extends React.Component<Props, State> {
                             </IonButtons>
                         </IonToolbar>
                     </IonHeader>
-                    <IonContent>
-                        <IonHeader collapse="condense">
-                            <IonToolbar>
-                                <IonTitle>Board Builder</IonTitle>
-                                <IonButtons slot="end">
-                                    <IonButton slot="icon-only" onClick={(e) => this.handleToggle(e)}>
-                                        <IonIcon icon={createOutline}/>
-                                    </IonButton>
-                                </IonButtons>
-                            </IonToolbar>
-                        </IonHeader>
-                        <IonReorderGroup disabled={!this.state.isEditing} onIonItemReorder={this.doReorder}>
-                            {this.state.boards}
-                        </IonReorderGroup>
-                        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-                            <IonFabButton onClick={(e) => this.handleNewBoard(e)}>
-                                <IonIcon icon={add}/>
-                            </IonFabButton>
-                        </IonFab>
-                    </IonContent>
-                </IonPage>
-            );
-        }
-
+                    <IonLoading
+                        isOpen={this.state.isLoading}
+                        message={'Loading Builds...'}
+                    />
+                    <IonReorderGroup disabled={!this.state.isEditing} onIonItemReorder={this.doReorder}>
+                        {this.state.boards}
+                    </IonReorderGroup>
+                    <IonFab vertical="bottom" horizontal="end" slot="fixed">
+                        <IonFabButton onClick={(e) => this.handleNewBoard(e)}>
+                            <IonIcon icon={add}/>
+                        </IonFabButton>
+                    </IonFab>
+                </IonContent>
+            </IonPage>
+        );
     }
 }
 
