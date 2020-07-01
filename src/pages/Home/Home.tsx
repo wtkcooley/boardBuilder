@@ -84,7 +84,7 @@ class Home extends React.Component<Props, State> {
                                 {build.name}
                             </h1>
                         </div>
-                        <IonButton slot="end" onClick={(e) => this.deleteBoard(e, build.name)}
+                        <IonButton slot="end" onClick={(e) => this.deleteBoard(e, build.id)}
                                    hidden={!this.state.isEditing}>
                             <IonIcon icon={trashOutline}/>
                         </IonButton>
@@ -144,7 +144,7 @@ class Home extends React.Component<Props, State> {
         event.detail.complete();
     }
 
-    async deleteBoard(e: any, name: string) {
+    async deleteBoard(e: any, id: number) {
         e.preventDefault()
         Plugins.Storage.get({
             key: "builds"
@@ -156,7 +156,7 @@ class Home extends React.Component<Props, State> {
             if (buildsObject != null) {
                 let temp = buildsObject;
                 temp.builds = temp.builds.filter(build => {
-                    return build.name !== name
+                    return build.id !== id
                 });
                 return temp;
             }

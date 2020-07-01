@@ -20,6 +20,7 @@ interface Props {
 
 interface State {
     name: string | null
+    id: number | null
     deck: Deck
     trucks: Trucks
     wheels: Wheels
@@ -30,6 +31,7 @@ interface State {
     conflictingName: boolean
     showNameAlert: boolean
     isEdited: boolean
+    originalName: string | null
 }
 
 class BoardBuilder extends React.Component<Props, State> {
@@ -38,10 +40,12 @@ class BoardBuilder extends React.Component<Props, State> {
 
         this.state = {
             name: "New Board",
+            id: null,
             isLoading: true,
             conflictingName: true,
             showNameAlert: false,
             isEdited: false,
+            originalName: "New Board",
             deck: {
                 id: null,
                 name: null,
@@ -124,12 +128,15 @@ class BoardBuilder extends React.Component<Props, State> {
             this.setState({
                 name: "New Board"
             });
-            let build: Build = new Build(this.state.name);
+            const date = new Date()
+            let build: Build = new Build(this.state.name, date.getTime());
             await Plugins.Storage.set({
                 key: "currentBuild", value: JSON.stringify(build.getBuild())
             })
             this.setState({
                 name: build.getName(),
+                originalName: build.getName(),
+                id: build.getId(),
                 isLoading: true,
                 deck: build.getDeck(),
                 trucks: build.getTrucks(),
@@ -143,6 +150,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 let build = JSON.parse(currentBuild);
                 this.setState({
                     name: build.name,
+                    originalName: build.name,
+                    id: build.id,
                     isLoading: true,
                     deck: build.deck,
                     trucks: build.trucks,
@@ -152,20 +161,6 @@ class BoardBuilder extends React.Component<Props, State> {
                     extras: build.extras
                 })
             }
-
-            await Plugins.Storage.get({key: "builds"}).then(resp => {
-                if (resp.value != null)
-                    return JSON.parse(resp.value)
-            }).then(async json => {
-                let temp = json;
-                temp.builds = json.builds.filter((build: build) => {
-                    return build.name !== this.state.name
-                })
-                await Plugins.Storage.set({
-                    key: "builds",
-                    value: JSON.stringify(temp)
-                });
-            });
         }
         this.setState({
             isLoading: false
@@ -173,22 +168,46 @@ class BoardBuilder extends React.Component<Props, State> {
     }
 
     async checkName() {
-        await Plugins.Storage.get({key: "builds"}).then(resp => {
-            if (resp.value != null)
-                return JSON.parse(resp.value)
-        }).then(async json => {
-            const sameNames = json.builds.filter((build: build) => {
-                return build.name === this.state.name
-            })
-            if (sameNames === null || sameNames.length === 0) {
+            await Plugins.Storage.get({key: "builds"}).then(resp => {
+                if (resp.value != null)
+                    return JSON.parse(resp.value)
+            }).then(json => {
                 this.setState({
                     conflictingName: false
                 })
-            } else {
-                this.setState({
-                    conflictingName: true
+                console.log(json);
+                json.builds.filter((build: build) => {
+                    if (build.name === this.state.name) {
+                        console.log('here');
+                        this.setState({
+                            conflictingName: true,
+                            showNameAlert: true
+                        })
+                    }
                 })
+            })
+    }
+
+    async deletePreviousSave() {
+        console.log("Deleting: "+ this.state.id);
+        const newBuilds = await Plugins.Storage.get({
+            key: "builds"
+        }).then(resp => {
+            if (resp.value != null)
+                return JSON.parse(resp.value)
+        }).then((buildsObject: buildsObject) => {
+            if (buildsObject != null) {
+                let temp = buildsObject;
+                temp.builds = temp.builds.filter(build => {
+                    return build.id !== this.state.id
+                });
+                return temp;
             }
+        })
+
+        await Plugins.Storage.set({
+            key: "builds",
+            value: JSON.stringify(newBuilds)
         })
     }
 
@@ -222,38 +241,36 @@ class BoardBuilder extends React.Component<Props, State> {
 
     async handleSave(e: any) {
         e.preventDefault();
+        await this.deletePreviousSave();
         await this.checkName();
-        if (!this.state.conflictingName) {
-            Plugins.Storage.get({
-                key: "builds"
-            }).then(resp => resp.value)
-                .then(value => {
-                    if (value != null)
-                        return JSON.parse(value)
-                }).then(async (buildsObject: buildsObject) => {
-                if (buildsObject != null) {
-                    let temp = buildsObject;
-                    const newBuild = await Plugins.Storage.get({
-                        key: "currentBuild"
-                    }).then(resp => {
-                        if (resp.value != null)
-                            return JSON.parse(resp.value)
-                    })
-                    console.log(newBuild);
-                    temp.builds.push(newBuild);
-                    return temp;
-                }
-            }).then(async buildsObject => {
-                await Plugins.Storage.set({
-                    key: "builds",
-                    value: JSON.stringify(buildsObject)
+        let name = this.state.name
+        if (this.state.conflictingName)
+            name = this.state.originalName
+        Plugins.Storage.get({
+            key: "builds"
+        }).then(resp => resp.value)
+            .then(value => {
+                if (value != null)
+                    return JSON.parse(value)
+            }).then(async (buildsObject: buildsObject) => {
+            if (buildsObject != null) {
+                let temp = buildsObject;
+                const newBuild = await Plugins.Storage.get({
+                    key: "currentBuild"
+                }).then(resp => {
+                    if (resp.value != null)
+                        return JSON.parse(resp.value)
                 })
+                newBuild.name = name;
+                temp.builds.push(newBuild);
+                return temp;
+            }
+        }).then(async buildsObject => {
+            await Plugins.Storage.set({
+                key: "builds",
+                value: JSON.stringify(buildsObject)
             })
-        } else {
-            this.setState({
-                showNameAlert: true
-            })
-        }
+        })
     }
 
     async handleAddToCart(e: any) {

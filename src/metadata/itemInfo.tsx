@@ -76,6 +76,7 @@ export interface ItemInfo {
 
 export interface build {
     name: string | null
+    id: number | null
     deck: Deck
     trucks: Trucks
     wheels: Wheels
@@ -91,9 +92,10 @@ export interface buildsObject {
 export class Build {
     public _build: build
 
-    constructor(name: string | null) {
+    constructor(name: string | null, id: number | null) {
         this._build = {
             name,
+            id,
             deck: {
                 id: null,
                 name: null,
@@ -165,6 +167,10 @@ export class Build {
     getName = () => {
         return this._build.name
     };
+
+    getId = () => {
+        return this._build.id
+    }
 
     getDeck = () => {
         return this._build.deck
