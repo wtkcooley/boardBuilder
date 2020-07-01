@@ -4,11 +4,11 @@ import {
     IonPage,
     IonToolbar,
     IonButton,
-    IonInput, IonList, IonItem, IonLabel, IonIcon, IonAlert
+    IonInput, IonList, IonItem, IonLabel, IonIcon, IonAlert, IonFabButton, IonFab, IonFabList
 } from '@ionic/react';
 import React, {FormEvent} from 'react';
 import './BoardBuilder.css';
-import {addCircleOutline, key} from "ionicons/icons";
+import {add, addCircleOutline, cartOutline, key, saveOutline} from "ionicons/icons";
 import {Plugins} from "@capacitor/core";
 
 import {Bearings, Build, build, buildsObject, Deck, Extras, Hardware, Trucks, Wheels} from "../../metadata/itemInfo";
@@ -186,7 +186,7 @@ class BoardBuilder extends React.Component<Props, State> {
                 })
             } else {
                 this.setState({
-                conflictingName: true
+                    conflictingName: true
                 })
             }
         })
@@ -220,7 +220,7 @@ class BoardBuilder extends React.Component<Props, State> {
             .then(build => console.log(build))
     }
 
-    async handleBackButton(e: any) {
+    async handleSave(e: any) {
         e.preventDefault();
         await this.checkName();
         if (!this.state.conflictingName) {
@@ -248,9 +248,6 @@ class BoardBuilder extends React.Component<Props, State> {
                     key: "builds",
                     value: JSON.stringify(buildsObject)
                 })
-            }).then(() => {
-                eventSubscription.get().emitEvent("updateHome");
-                this.props.history.push('/home');
             })
         } else {
             this.setState({
@@ -259,11 +256,51 @@ class BoardBuilder extends React.Component<Props, State> {
         }
     }
 
+    async handleAddToCart(e: any) {
+        e.preventDefault();
+        let currentCart: any = await Plugins.Storage.get({key: "cart"}).then(resp => {
+            if (resp.value !== null)
+                return resp.value
+        }).then(value => {
+            if (typeof value !== "undefined")
+                JSON.parse(value)
+        })
+
+        if (currentCart === undefined) {
+            currentCart = {
+                cart: []
+            }
+        }
+
+        if (this.state.deck.id !== null)
+            currentCart.cart.push(this.state.deck)
+        if (this.state.trucks.id !== null)
+            currentCart.cart.push(this.state.trucks)
+        if (this.state.wheels.id !== null)
+            currentCart.cart.push(this.state.wheels)
+        if (this.state.bearings.id !== null)
+            currentCart.cart.push(this.state.bearings)
+        if (this.state.hardware.id !== null)
+            currentCart.cart.push(this.state.hardware)
+        if (this.state.extras.id !== null)
+            currentCart.cart.push(this.state.extras)
+
+        await Plugins.Storage.set({
+            key: "cart",
+            value: JSON.stringify(currentCart)
+        })
+    }
+
+    async handleBackButton(e: any) {
+        eventSubscription.get().emitEvent("updateHome");
+        this.props.history.push('/home');
+    }
+
     render() {
         const components = [{
-                name: "Deck",
-                link: "/decks"
-            },
+            name: "Deck",
+            link: "/decks"
+        },
             {
                 name: "Trucks",
                 link: "/trucks"
@@ -349,6 +386,16 @@ class BoardBuilder extends React.Component<Props, State> {
                         <IonList>
                             {items}
                         </IonList>
+                        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+                            <div className="button-container">
+                                <IonFabButton className="save-button" onClick={(e) => this.handleSave(e)}>
+                                    <IonIcon icon={saveOutline}/>
+                                </IonFabButton>
+                                <IonFabButton className="cart-button" onClick={(e) => this.handleAddToCart(e)}>
+                                    <IonIcon icon={cartOutline}/>
+                                </IonFabButton>
+                            </div>
+                        </IonFab>
                     </IonContent>
                 </IonPage>
             );

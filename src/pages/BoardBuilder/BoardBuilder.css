@@ -19,3 +19,11 @@
   height: 120px;
   animation: spin 2s linear infinite;
 }
+
+.button-container {
+  display: inline-flex;
+}
+
+.button-container .save-button {
+  margin-right: 10px;
+}
