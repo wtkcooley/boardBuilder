@@ -242,10 +242,10 @@ class BoardBuilder extends React.Component<Props, State> {
     async handleSave(e: any) {
         e.preventDefault();
         await this.deletePreviousSave();
-        await this.checkName();
+        /*await this.checkName();
         let name = this.state.name
         if (this.state.conflictingName)
-            name = this.state.originalName
+            name = this.state.originalName*/
         Plugins.Storage.get({
             key: "builds"
         }).then(resp => resp.value)
@@ -261,7 +261,7 @@ class BoardBuilder extends React.Component<Props, State> {
                     if (resp.value != null)
                         return JSON.parse(resp.value)
                 })
-                newBuild.name = name;
+                /*newBuild.name = name;*/
                 temp.builds.push(newBuild);
                 return temp;
             }
