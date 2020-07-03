@@ -9,6 +9,7 @@ export interface Deck {
     info: string | null
     price: number | null
     link: string | null
+    asin: string | null
 }
 
 export interface Trucks {
@@ -20,6 +21,7 @@ export interface Trucks {
     info: string | null
     price: number | null
     link: string | null
+    asin: string | null
 }
 
 export interface Wheels {
@@ -32,6 +34,7 @@ export interface Wheels {
     info: string | null
     price: number | null
     link: string | null
+    asin: string | null
 }
 
 export interface Bearings {
@@ -42,6 +45,7 @@ export interface Bearings {
     info: string | null
     price: number | null
     link: string | null
+    asin: string | null
 }
 
 export interface Hardware {
@@ -53,6 +57,7 @@ export interface Hardware {
     info: string | null
     price: number | null
     link: string | null
+    asin: string | null
 }
 
 export interface Extras {
@@ -63,6 +68,7 @@ export interface Extras {
     info: string | null
     price: number | null
     link: string | null
+    asin: string | null
 }
 
 export interface ItemInfo {
@@ -106,7 +112,8 @@ export class Build {
                 'grip-tape':  null,
                 info: null,
                 price: null,
-                link: null
+                link: null,
+                asin: null
             },
             trucks: {
                 id: null,
@@ -116,7 +123,8 @@ export class Build {
                 width: null,
                 info: null,
                 price: null,
-                link: null
+                link: null,
+                asin: null
             },
             wheels: {
                 id: null,
@@ -127,7 +135,8 @@ export class Build {
                 durometer: null,
                 info: null,
                 price: null,
-                link: null
+                link: null,
+                asin: null
             },
             bearings: {
                 id: null,
@@ -136,7 +145,8 @@ export class Build {
                 image: null,
                 info: null,
                 price:  null,
-                link: null
+                link: null,
+                asin: null
             },
             hardware: {
                 id: null,
@@ -146,7 +156,8 @@ export class Build {
                 length: null,
                 info: null,
                 price:  null,
-                link: null
+                link: null,
+                asin: null
             },
             extras: {
                 id: null,
@@ -155,7 +166,8 @@ export class Build {
                 image: null,
                 info: null,
                 price:  null,
-                link: null
+                link: null,
+                asin: null
             }
         }
     };

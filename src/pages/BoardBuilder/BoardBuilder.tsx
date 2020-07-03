@@ -56,7 +56,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 'grip-tape': null,
                 info: null,
                 price: null,
-                link: null
+                link: null,
+                asin: null
             },
             trucks: {
                 id: null,
@@ -66,7 +67,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 width: null,
                 info: null,
                 price: null,
-                link: null
+                link: null,
+                asin: null
             },
             wheels: {
                 id: null,
@@ -77,7 +79,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 durometer: null,
                 info: null,
                 price: null,
-                link: null
+                link: null,
+                asin: null
             },
             bearings: {
                 id: null,
@@ -86,7 +89,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 image: null,
                 info: null,
                 price: null,
-                link: null
+                link: null,
+                asin: null
             },
             hardware: {
                 id: null,
@@ -96,7 +100,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 length: null,
                 info: null,
                 price: null,
-                link: null
+                link: null,
+                asin: null
             },
             extras: {
                 id: null,
@@ -105,7 +110,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 image: null,
                 info: null,
                 price: null,
-                link: null
+                link: null,
+                asin: null
             }
         }
 
@@ -168,28 +174,28 @@ class BoardBuilder extends React.Component<Props, State> {
     }
 
     async checkName() {
-            await Plugins.Storage.get({key: "builds"}).then(resp => {
-                if (resp.value != null)
-                    return JSON.parse(resp.value)
-            }).then(json => {
-                this.setState({
-                    conflictingName: false
-                })
-                console.log(json);
-                json.builds.filter((build: build) => {
-                    if (build.name === this.state.name) {
-                        console.log('here');
-                        this.setState({
-                            conflictingName: true,
-                            showNameAlert: true
-                        })
-                    }
-                })
+        await Plugins.Storage.get({key: "builds"}).then(resp => {
+            if (resp.value != null)
+                return JSON.parse(resp.value)
+        }).then(json => {
+            this.setState({
+                conflictingName: false
             })
+            console.log(json);
+            json.builds.filter((build: build) => {
+                if (build.name === this.state.name) {
+                    console.log('here');
+                    this.setState({
+                        conflictingName: true,
+                        showNameAlert: true
+                    })
+                }
+            })
+        })
     }
 
     async deletePreviousSave() {
-        console.log("Deleting: "+ this.state.id);
+        console.log("Deleting: " + this.state.id);
         const newBuilds = await Plugins.Storage.get({
             key: "builds"
         }).then(resp => {
@@ -275,19 +281,22 @@ class BoardBuilder extends React.Component<Props, State> {
 
     async handleAddToCart(e: any) {
         e.preventDefault();
-        let currentCart: any = await Plugins.Storage.get({key: "cart"}).then(resp => {
-            if (resp.value !== null)
-                return resp.value
-        }).then(value => {
-            if (typeof value !== "undefined")
-                JSON.parse(value)
+        let currentCart = await Plugins.Storage.get({
+            key: "cart"
+        }).then(resp => resp.value).then(value => {
+            if(value !== null)
+                return JSON.parse(value)
         })
+
+        console.log("1" + currentCart);
 
         if (currentCart === undefined) {
             currentCart = {
                 cart: []
             }
         }
+
+        console.log("2" + currentCart);
 
         if (this.state.deck.id !== null)
             currentCart.cart.push(this.state.deck)
@@ -302,10 +311,14 @@ class BoardBuilder extends React.Component<Props, State> {
         if (this.state.extras.id !== null)
             currentCart.cart.push(this.state.extras)
 
+        console.log("3" + currentCart);
+
         await Plugins.Storage.set({
             key: "cart",
             value: JSON.stringify(currentCart)
         })
+
+        eventSubscription.get().emitEvent("updateCart");
     }
 
     async handleBackButton(e: any) {
