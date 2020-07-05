@@ -32,6 +32,8 @@ interface State {
     showNameAlert: boolean
     isEdited: boolean
     originalName: string | null
+    showSavedAlert: boolean
+    showAddedToCartAlert: boolean
 }
 
 class BoardBuilder extends React.Component<Props, State> {
@@ -46,6 +48,8 @@ class BoardBuilder extends React.Component<Props, State> {
             showNameAlert: false,
             isEdited: false,
             originalName: "New Board",
+            showSavedAlert: false,
+            showAddedToCartAlert: false,
             deck: {
                 id: null,
                 name: null,
@@ -247,12 +251,15 @@ class BoardBuilder extends React.Component<Props, State> {
 
     async handleSave(e: any) {
         e.preventDefault();
+        this.setState({
+            isLoading: true
+        })
         await this.deletePreviousSave();
         /*await this.checkName();
         let name = this.state.name
         if (this.state.conflictingName)
             name = this.state.originalName*/
-        Plugins.Storage.get({
+        await Plugins.Storage.get({
             key: "builds"
         }).then(resp => resp.value)
             .then(value => {
@@ -277,10 +284,18 @@ class BoardBuilder extends React.Component<Props, State> {
                 value: JSON.stringify(buildsObject)
             })
         })
+
+        this.setState({
+            isLoading: false,
+            showSavedAlert: true
+        })
     }
 
     async handleAddToCart(e: any) {
         e.preventDefault();
+        this.setState({
+            isLoading: true
+        })
         let currentCart = await Plugins.Storage.get({
             key: "cart"
         }).then(resp => resp.value).then(value => {
@@ -288,15 +303,11 @@ class BoardBuilder extends React.Component<Props, State> {
                 return JSON.parse(value)
         })
 
-        console.log("1" + currentCart);
-
         if (currentCart === undefined) {
             currentCart = {
                 cart: []
             }
         }
-
-        console.log("2" + currentCart);
 
         if (this.state.deck.id !== null)
             currentCart.cart.push(this.state.deck)
@@ -311,14 +322,17 @@ class BoardBuilder extends React.Component<Props, State> {
         if (this.state.extras.id !== null)
             currentCart.cart.push(this.state.extras)
 
-        console.log("3" + currentCart);
-
         await Plugins.Storage.set({
             key: "cart",
             value: JSON.stringify(currentCart)
         })
 
         eventSubscription.get().emitEvent("updateCart");
+
+        this.setState({
+            isLoading: false,
+            showAddedToCartAlert: true
+        })
     }
 
     async handleBackButton(e: any) {
@@ -411,6 +425,24 @@ class BoardBuilder extends React.Component<Props, State> {
                             header={'Error Saving'}
                             subHeader={'Conflicting Names'}
                             message={'It seems that you are attempting to save this build under a name that already exists on this device. To fix this simply change the name to a unique name, so you don\'t accidentally edit or delete the wrong builds'}
+                            buttons={['OK']}
+                        />
+                        <IonAlert
+                            isOpen={this.state.showSavedAlert}
+                            onDidDismiss={() => this.setState({
+                                showSavedAlert: false
+                            })}
+                            header={'Saved successfully'}
+                            subHeader={'Your build, ' + this.state.name + ', was saved!'}
+                            buttons={['OK']}
+                        />
+                        <IonAlert
+                            isOpen={this.state.showAddedToCartAlert}
+                            onDidDismiss={() => this.setState({
+                                showAddedToCartAlert: false
+                            })}
+                            header={'Added to Cart!'}
+                            subHeader={'Your build was successfully added to your cart!'}
                             buttons={['OK']}
                         />
                         <IonList>

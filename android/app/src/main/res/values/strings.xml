@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Board Builder</string>
+    <string name="title_activity_main">Board Builder</string>
+    <string name="package_name">com.williamtcooley.boardBuilder</string>
+    <string name="custom_url_scheme">com.williamtcooley.boardBuilder</string>
+</resources>

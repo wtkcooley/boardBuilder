@@ -32,9 +32,11 @@ import BearingsPage from "./pages/Components/Bearings/BearingsPage";
 import HardwarePage from "./pages/Components/Hardware/HardwarePage";
 import ExtrasPage from "./pages/Components/Extras/ExtrasPage";
 import Cart from "./pages/Cart/Cart";
+import Items from './pages/Items/Items';
 
 /* Icons */
 import {cartOutline, hammerOutline, homeOutline, pricetagOutline} from "ionicons/icons";
+
 
 const App: React.FC = () => (
         <IonApp>
@@ -49,7 +51,7 @@ const App: React.FC = () => (
                         <Route path="/bearings" component={BearingsPage} exact={true}/>
                         <Route path="/hardware" component={HardwarePage} exact={true}/>
                         <Route path="/extras" component={ExtrasPage} exact={true}/>
-                        <Route path="/items" exact={true}/>
+                        <Route path="/items" component={Items} exact={true}/>
                         <Route path="/cart" component={Cart} exact={true}/>
                         <Route exact path="/" render={() => <Redirect to="/home"/>}/>
                     </IonRouterOutlet>
