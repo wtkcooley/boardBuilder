@@ -14,7 +14,8 @@ import {add, createOutline, trashOutline} from 'ionicons/icons'
 import React, {CSSProperties} from 'react';
 
 //style
-import './Cart.css';
+import '../Items/items.css';
+import './Cart.css'
 
 //plugins
 import {Plugins} from "@capacitor/core";
@@ -93,8 +94,19 @@ class Cart extends React.Component<Props, State> {
                     <IonItem className="component" button={true}>
                         <div className="img-container" style={backgroundImage}/>
                         <div className="text-container">
-                            <h6>{item.name}</h6>
-                            <p>{item.price}</p>
+                            <div className="title-container">
+                                <h6>
+                                    {item.name}
+                                </h6>
+                            </div>
+                            <div className="details-container">
+                                <p>
+                                    {item.brand}
+                                </p>
+                                <p>
+                                    ${item.price}
+                                </p>
+                            </div>
                         </div>
                         <IonButton slot="end" onClick={(e) => this.deleteItem(e, item.id)}>
                             <IonIcon icon={trashOutline}/>

@@ -19,6 +19,7 @@ import React, {CSSProperties} from 'react';
 
 //style
 import './Home.css';
+import '../Items/items.css';
 
 //plugins
 import {Plugins} from "@capacitor/core";

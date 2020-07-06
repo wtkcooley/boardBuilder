@@ -14,11 +14,16 @@ import {
     IonCardHeader,
     IonCardSubtitle,
     IonCardTitle,
-    IonCardContent
+    IonCardContent,
+    IonModal,
+    IonLoading,
+    IonAlert,
+    IonFab,
+    IonFabButton
 } from '@ionic/react';
 import React, {CSSProperties} from 'react';
-import './TrucksPage.css';
-import {addCircleOutline, image} from "ionicons/icons";
+import '../../Items/items.css';
+import {addCircleOutline, image, arrowBackOutline} from "ionicons/icons";
 import {Trucks} from "../../../metadata/itemInfo";
 
 import {Plugins} from "@capacitor/core";
@@ -31,17 +36,36 @@ interface Props {
 }
 
 interface State {
-
+    showItemModal: boolean,
+    currentItem: any,
+    currentItemImage: any
 }
 
 class TrucksPage extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.handleCardClick.bind(this);
+        this.state = {
+            showItemModal: false,
+            currentItem: {},
+            currentItemImage: {}
+        }
+
+        this.handleAddToBuild = this.handleAddToBuild.bind(this);
     }
 
-    async handleCardClick(e: any, trucks: Trucks) {
+    handleItemClick(e: any, item: any) {
+        const image: CSSProperties = {
+            backgroundImage: `url(${item.image})`
+        }
+        this.setState({
+            currentItem: item,
+            currentItemImage: image,
+            showItemModal: true
+        })
+    }
+
+    async handleAddToBuild(e: any, trucks: Trucks) {
         e.preventDefault();
         await Plugins.Storage.get({
             key: "currentBuild",
@@ -60,6 +84,9 @@ class TrucksPage extends React.Component<Props, State> {
                 value: JSON.stringify(newBuild)
             })
         }).then(() => {
+            this.setState({
+                showItemModal: false
+            })
             eventSubscription.get().emitEvent("updateBoardBuilder");
             this.props.history.push('/boardbuilder');
         })
@@ -74,23 +101,27 @@ class TrucksPage extends React.Component<Props, State> {
                 backgroundImage: `url(${trucks.image})`
             }
             return (
-                <IonItem className="component" routerDirection="back" onClick={e => this.handleCardClick(e, trucks)} button={true}>
-                    <div className="img-container" style={backgroundImage}>
-                    </div>
+                <IonItem className="component" routerDirection="back" onClick={e => this.handleItemClick(e, trucks)} button={true}>
+                    <div className="img-container" style={backgroundImage}/>
                     <div className="text-container">
-                        <h6>
-                            {trucks.name}
-                        </h6>
-                        <p>
-                            {trucks.brand}
-                        </p>
-                        <p>
-                            {trucks.info}
-                        </p>
+                        <div className="title-container">
+                            <h6>
+                                {trucks.name}
+                            </h6>
+                        </div>
+                        <div className="details-container">
+                            <p>
+                                {trucks.brand}
+                            </p>
+                            <p>
+                                ${trucks.price}
+                            </p>
+                        </div>
                     </div>
                 </IonItem>
             )
         })
+        const item = this.state.currentItem;
         return (
             <IonPage>
                 <IonHeader>
@@ -105,6 +136,26 @@ class TrucksPage extends React.Component<Props, State> {
                     <IonList>
                         {items}
                     </IonList>
+                    <IonModal isOpen={this.state.showItemModal}>
+                        <IonFab vertical="top" horizontal="start" slot="fixed">
+                            <IonFabButton onClick={() => this.setState({showItemModal: false})}>
+                                <IonIcon icon={arrowBackOutline} />
+                            </IonFabButton>
+                        </IonFab>
+                        <div className="item-modal-text-container">
+                        
+                            <div className="item-modal-img-container" style={this.state.currentItemImage}/>
+                            <h1>{item.name}</h1>
+                            <p className="brand">
+                                {item.brand}
+                            </p>
+                            <p>Width: {item.width}mm</p>
+                            <h2>
+                                Price: ${item.price}
+                            </h2>
+                        </div>
+                        <IonButton onClick={(e) => this.handleAddToBuild(e, item)}>Add to build</IonButton>
+                    </IonModal>
                 </IonContent>
             </IonPage>
         );
