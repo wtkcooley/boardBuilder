@@ -66,7 +66,10 @@ class BearingsPage extends React.Component<Props, State> {
     }
 
     render() {
-        let items = node[3].map((bearings: Bearings) => {
+        const bearings = node.filter((item: any) => {
+            return item.category === "bearings"
+        })
+        const items = bearings.map((bearings: Bearings) => {
             const backgroundImage: CSSProperties = {
                 backgroundImage: `url(${bearings.image})`
             }
@@ -88,6 +91,7 @@ class BearingsPage extends React.Component<Props, State> {
                 </IonItem>
             )
         })
+        console.log(items)
         return (
             <IonPage>
                 <IonHeader>

@@ -10,6 +10,7 @@ export interface Deck {
     price: number | null
     link: string | null
     asin: string | null
+    category: string | null
 }
 
 export interface Trucks {
@@ -22,6 +23,7 @@ export interface Trucks {
     price: number | null
     link: string | null
     asin: string | null
+    category: string | null
 }
 
 export interface Wheels {
@@ -35,6 +37,7 @@ export interface Wheels {
     price: number | null
     link: string | null
     asin: string | null
+    category: string | null
 }
 
 export interface Bearings {
@@ -46,6 +49,7 @@ export interface Bearings {
     price: number | null
     link: string | null
     asin: string | null
+    category: string | null
 }
 
 export interface Hardware {
@@ -58,6 +62,7 @@ export interface Hardware {
     price: number | null
     link: string | null
     asin: string | null
+    category: string | null
 }
 
 export interface Extras {
@@ -69,6 +74,7 @@ export interface Extras {
     price: number | null
     link: string | null
     asin: string | null
+    category: string | null
 }
 
 export interface ItemInfo {
@@ -113,7 +119,8 @@ export class Build {
                 info: null,
                 price: null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "deck"
             },
             trucks: {
                 id: null,
@@ -124,7 +131,8 @@ export class Build {
                 info: null,
                 price: null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "trucks"
             },
             wheels: {
                 id: null,
@@ -136,7 +144,8 @@ export class Build {
                 info: null,
                 price: null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "wheels"
             },
             bearings: {
                 id: null,
@@ -146,7 +155,8 @@ export class Build {
                 info: null,
                 price:  null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "bearings"
             },
             hardware: {
                 id: null,
@@ -157,7 +167,8 @@ export class Build {
                 info: null,
                 price:  null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "hardware"
             },
             extras: {
                 id: null,
@@ -167,7 +178,8 @@ export class Build {
                 info: null,
                 price:  null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "extras"
             }
         }
     };

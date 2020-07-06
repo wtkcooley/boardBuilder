@@ -66,7 +66,10 @@ class HardwarePage extends React.Component<Props, State> {
     }
 
     render() {
-        let items = node[4].map((hardware: Hardware) => {
+        const hardware = node.filter((item: any) => {
+            return item.category === "hardware"
+        })
+        let items = hardware.map((hardware: Hardware) => {
             const backgroundImage: CSSProperties = {
                 backgroundImage: `url(${hardware.image})`
             }

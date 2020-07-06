@@ -66,7 +66,10 @@ class WheelsPage extends React.Component<Props, State> {
     }
 
     render() {
-        let items = node[2].map((wheels: Wheels) => {
+        const wheels = node.filter((item: any) => {
+            return item.category === "wheels"
+        })
+        let items = wheels.map((wheels: Wheels) => {
             const backgroundImage: CSSProperties = {
                 backgroundImage: `url(${wheels.image})`
             }

@@ -61,7 +61,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 info: null,
                 price: null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "deck"
             },
             trucks: {
                 id: null,
@@ -72,7 +73,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 info: null,
                 price: null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "trucks"
             },
             wheels: {
                 id: null,
@@ -84,7 +86,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 info: null,
                 price: null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "wheels"
             },
             bearings: {
                 id: null,
@@ -94,7 +97,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 info: null,
                 price: null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "bearings"
             },
             hardware: {
                 id: null,
@@ -105,7 +109,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 info: null,
                 price: null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "hardware"
             },
             extras: {
                 id: null,
@@ -115,7 +120,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 info: null,
                 price: null,
                 link: null,
-                asin: null
+                asin: null,
+                category: "extras"
             }
         }
 

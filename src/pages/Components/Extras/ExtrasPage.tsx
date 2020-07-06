@@ -66,7 +66,10 @@ class ExtrasPage extends React.Component<Props, State> {
     }
 
     render() {
-        let items = node[5].map((extras: Extras) => {
+        const extras = node.filter((item: any) => {
+            return item.category === "extras"
+        })
+        let items = extras.map((extras: Extras) => {
             const backgroundImage: CSSProperties = {
                 backgroundImage: `url(${extras.image})`
             }

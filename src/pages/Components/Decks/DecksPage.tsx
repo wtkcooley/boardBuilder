@@ -66,7 +66,10 @@ class DecksPage extends React.Component<Props, State> {
     }
 
     render() {
-        let items = node[0].map((deck: Deck) => {
+        const decks = node.filter((item: any) => {
+            return item.category === "deck"
+        })
+        let items = decks.map((deck: Deck) => {
             const backgroundImage: CSSProperties = {
                 backgroundImage: `url(${deck.image})`
             }
