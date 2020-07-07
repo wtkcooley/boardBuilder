@@ -8,7 +8,7 @@ import {
     IonIcon,
     IonFab,
     IonFabButton,
-    IonList, IonItem, IonButtons, IonReorder, IonLoading
+    IonList, IonItem, IonButtons, IonReorder, IonLoading, IonText
 } from '@ionic/react';
 import {add, createOutline, trashOutline} from 'ionicons/icons'
 import React, {CSSProperties} from 'react';
@@ -29,9 +29,10 @@ interface Props {
 }
 
 interface State {
-    items: any,
+    items: any
     isLoading: boolean
     isEditing: boolean
+    total: number
 }
 
 class Cart extends React.Component<Props, State> {
@@ -41,7 +42,8 @@ class Cart extends React.Component<Props, State> {
         this.state = {
             items: [],
             isLoading: true,
-            isEditing: false
+            isEditing: false,
+            total: 0
         };
 
         this.updateCart = this.updateCart.bind(this);
@@ -77,7 +79,9 @@ class Cart extends React.Component<Props, State> {
     }
 
     async updateCart() {
-        console.log('here');
+        this.setState({
+            total: 0
+        })
         const itemElements = await Plugins.Storage.get({
             key: "cart"
         }).then(resp => resp.value).then(json => {
@@ -90,6 +94,11 @@ class Cart extends React.Component<Props, State> {
                 const backgroundImage: CSSProperties = {
                     backgroundImage: `url(${item.image})`
                 }
+
+                this.setState({
+                    total: (this.state.total + item.price)
+                });
+
                 return (
                     <IonItem className="component" button={true}>
                         <div className="img-container" style={backgroundImage}/>
@@ -170,9 +179,12 @@ class Cart extends React.Component<Props, State> {
                     <IonList>
                         {this.state.items}
                     </IonList>
-                    <IonButton onClick={(e: any) => this.handleBuyOnAmazon(e)}>
-                        Buy now on Amazon
-                    </IonButton>
+                    <div className="end-container">
+                      <IonText>Total: ${this.state.total.toFixed(2)}</IonText>
+                        <IonButton onClick={(e: any) => this.handleBuyOnAmazon(e)}>
+                            Buy now on Amazon
+                        </IonButton>  
+                    </div>
                 </IonContent>
             </IonPage>
         );

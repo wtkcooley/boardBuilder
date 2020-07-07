@@ -93,6 +93,11 @@ class Items extends React.Component<Props, State> {
         })
     }
 
+    async handleBuyOnAmazon(e: any, item: any) {
+        e.preventDefault()
+        await Plugins.Browser.open({url: item.link});
+    }
+
     render() {
         let itemsArray = node.map((item: any) => {
             const backgroundImage: CSSProperties = {
@@ -130,7 +135,11 @@ class Items extends React.Component<Props, State> {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
-                <IonModal isOpen={this.state.showItemModal}>
+                <IonModal onDidDismiss={() => {
+                        this.setState({
+                            showItemModal: false
+                        })
+                    }} isOpen={this.state.showItemModal}>
                     <IonFab vertical="top" horizontal="start" slot="fixed">
                         <IonFabButton onClick={() => this.setState({showItemModal: false})}>
                             <IonIcon icon={arrowBackOutline} />
@@ -150,6 +159,10 @@ class Items extends React.Component<Props, State> {
                             Price: ${item.price}
                         </h2>
                     </div>
+                    <div className="item-modal-button-container">
+                        <IonButton className="buy-on-amazon-button" onClick={(e) => this.handleBuyOnAmazon(e, item)}>Buy on Amazon</IonButton>
+                        <IonButton className="add-to-cart-button" onClick={(e) => this.handleAddToCart(e, item)}>Add to Cart</IonButton>
+                    </div>
                     <IonAlert
                         isOpen={this.state.showAddedToCartAlert}
                         onDidDismiss={() => this.setState({
@@ -159,7 +172,7 @@ class Items extends React.Component<Props, State> {
                         subHeader={'Your build was successfully added to your cart!'}
                         buttons={['OK']}
                     />
-                    <IonButton onClick={(e) => this.handleAddToCart(e, item)}>Add to Cart</IonButton>
+                    
                     <IonLoading
                         isOpen={this.state.isLoading}
                         onDidDismiss={() => {

@@ -36,9 +36,10 @@ interface Props {
 }
 
 interface State {
-    showItemModal: boolean,
-    currentItem: any,
+    showItemModal: boolean
+    currentItem: any
     currentItemImage: any
+    showAddedToCartAlert: boolean
 }
 
 class HardwarePage extends React.Component<Props, State> {
@@ -48,7 +49,8 @@ class HardwarePage extends React.Component<Props, State> {
         this.state = {
             showItemModal: false,
             currentItem: {},
-            currentItemImage: {}
+            currentItemImage: {},
+            showAddedToCartAlert: false
         }
 
         this.handleAddToBuild = this.handleAddToBuild.bind(this);
@@ -90,6 +92,44 @@ class HardwarePage extends React.Component<Props, State> {
             eventSubscription.get().emitEvent("updateBoardBuilder");
             this.props.history.push('/boardbuilder');
         })
+    }
+
+    async handleAddToCart(e: any, item: any) {
+        e.preventDefault();
+        this.setState({
+            //isLoading: true
+        })
+        let currentCart = await Plugins.Storage.get({
+            key: "cart"
+        }).then(resp => resp.value).then(value => {
+            if(value !== null)
+                return JSON.parse(value)
+        })
+
+        if (currentCart === undefined) {
+            currentCart = {
+                cart: []
+            }
+        }
+
+        currentCart.cart.push(item)
+
+        await Plugins.Storage.set({
+            key: "cart",
+            value: JSON.stringify(currentCart)
+        })
+
+        eventSubscription.get().emitEvent("updateCart");
+
+        this.setState({
+            //isLoading: false,
+            showAddedToCartAlert: true
+        })
+    }
+
+    async handleBuyOnAmazon(e: any, item: any) {
+        e.preventDefault()
+        await Plugins.Browser.open({url: item.link});
     }
 
     render() {
@@ -136,7 +176,11 @@ class HardwarePage extends React.Component<Props, State> {
                     <IonList>
                         {items}
                     </IonList>
-                    <IonModal isOpen={this.state.showItemModal}>
+                    <IonModal onDidDismiss={() => {
+                        this.setState({
+                            showItemModal: false
+                        })
+                    }} isOpen={this.state.showItemModal}>
                         <IonFab vertical="top" horizontal="start" slot="fixed">
                             <IonFabButton onClick={() => this.setState({showItemModal: false})}>
                                 <IonIcon icon={arrowBackOutline} />
@@ -154,7 +198,20 @@ class HardwarePage extends React.Component<Props, State> {
                                 Price: ${item.price}
                             </h2>
                         </div>
-                        <IonButton onClick={(e) => this.handleAddToBuild(e, item)}>Add to build</IonButton>
+                        <div className="build-item-modal-button-container">
+                            <IonButton className="buy-on-amazon-button" onClick={(e) => this.handleBuyOnAmazon(e, item)}>Buy on Amazon</IonButton>
+                            <IonButton className="add-to-cart-button" onClick={(e) => this.handleAddToCart(e, item)}>Add to Cart</IonButton>
+                            <IonButton className="add-to-build-button" onClick={(e) => this.handleAddToBuild(e, item)}>Add to build</IonButton>
+                        </div>
+                        <IonAlert
+                            isOpen={this.state.showAddedToCartAlert}
+                            onDidDismiss={() => this.setState({
+                                showAddedToCartAlert: false
+                            })}
+                            header={'Added to Cart!'}
+                            subHeader={'Your build was successfully added to your cart!'}
+                            buttons={['OK']}
+                        />
                     </IonModal>
                 </IonContent>
             </IonPage>

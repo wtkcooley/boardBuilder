@@ -32,6 +32,7 @@ ion-item .text-container .details-container p {
     background-size: contain;
     width: 100%;
     height: 50%;
+    border-bottom: 1px solid black;
 }
 
 .item-modal-text-container {
@@ -59,4 +60,57 @@ ion-item .text-container .details-container p {
 
 .item-modal-text-container p .brand {
     color: gray
+}
+
+.item-modal-button-container, .build-item-modal-button-container {
+    width: 100%;
+    height: 12%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.item-modal-button-container .add-to-cart-button {
+    height: 80%;
+    width: 42.5%;
+    margin-right: 5%;
+    margin-left: 2.5%;
+    margin-bottom: 2.5%;
+    white-space: normal;
+}
+
+.item-modal-button-container .buy-on-amazon-button {
+    height: 80%;
+    width: 42.5%;
+    margin-right: 2.5%;
+    margin-left: 5%;
+    margin-bottom: 2.5%;
+    white-space: normal;
+}
+
+.build-item-modal-button-container .add-to-cart-button {
+    height: 80%;
+    width: 25%;
+    margin-right: 2.5%;
+    margin-left: 2.5%;
+    margin-bottom: 2.5%;
+    white-space: normal;
+}
+
+.build-item-modal-button-container .buy-on-amazon-button {
+    height: 80%;
+    width: 25%;
+    margin-right: 2.5%;
+    margin-left: 5%;
+    margin-bottom: 2.5%;
+    white-space: normal;
+}
+
+.build-item-modal-button-container .add-to-build-button {
+    height: 80%;
+    width: 25%;
+    margin-right: 5%;
+    margin-left: 2.5%;
+    margin-bottom: 2.5%;
+    white-space: normal;
 }
