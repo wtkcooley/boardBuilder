@@ -33,9 +33,11 @@ import HardwarePage from "./pages/Components/Hardware/HardwarePage";
 import ExtrasPage from "./pages/Components/Extras/ExtrasPage";
 import Cart from "./pages/Cart/Cart";
 import Items from './pages/Items/Items';
+import GriptapePage from './pages/Components/Griptape/GriptapePage';
 
 /* Icons */
 import {cartOutline, hammerOutline, homeOutline, pricetagOutline} from "ionicons/icons";
+
 
 
 const App: React.FC = () => (
@@ -46,6 +48,7 @@ const App: React.FC = () => (
                         <Route path="/home" component={Home} exact={true}/>
                         <Route path="/boardbuilder" component={BoardBuilder} exact={true}/>
                         <Route path="/decks" component={DecksPage} exact={true}/>
+                        <Route path="/griptape" component={GriptapePage} exact={true}/>
                         <Route path="/trucks" component={TrucksPage} exact={true}/>
                         <Route path="/wheels" component={WheelsPage} exact={true}/>
                         <Route path="/bearings" component={BearingsPage} exact={true}/>

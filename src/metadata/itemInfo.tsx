@@ -13,6 +13,20 @@ export interface Deck {
     category: string | null
 }
 
+export interface Griptape {
+    id: number | null
+    name: string | null
+    brand: string | null
+    image: string | null
+    width: number | null
+    length: number | null
+    info: string | null
+    price: number | null
+    link: string | null
+    asin: string | null
+    category: string | null
+}
+
 export interface Trucks {
     id: number | null
     name: string | null
@@ -90,6 +104,7 @@ export interface build {
     name: string | null
     id: number | null
     deck: Deck
+    griptape: Griptape
     trucks: Trucks
     wheels: Wheels
     bearings: Bearings
@@ -121,6 +136,19 @@ export class Build {
                 link: null,
                 asin: null,
                 category: "deck"
+            },
+            griptape: {
+                id: null,
+                name: null,
+                brand: null,
+                image: null,
+                width: null,
+                length: null,
+                info: null,
+                price: null,
+                link: null,
+                asin: null,
+                category: "griptape"
             },
             trucks: {
                 id: null,
@@ -199,6 +227,10 @@ export class Build {
     getDeck = () => {
         return this._build.deck
     };
+
+    getGriptape = () => {
+        return this._build.griptape
+    }
 
     getTrucks = () => {
         return this._build.trucks

@@ -11,7 +11,7 @@ import './BoardBuilder.css';
 import {add, addCircleOutline, cartOutline, key, saveOutline} from "ionicons/icons";
 import {Plugins} from "@capacitor/core";
 
-import {Bearings, Build, build, buildsObject, Deck, Extras, Hardware, Trucks, Wheels} from "../../metadata/itemInfo";
+import {Bearings, Build, build, buildsObject, Deck, Extras, Hardware, Trucks, Wheels, Griptape} from "../../metadata/itemInfo";
 import eventSubscription from "../../services/eventSubscription";
 
 interface Props {
@@ -22,6 +22,7 @@ interface State {
     name: string | null
     id: number | null
     deck: Deck
+    griptape: Griptape
     trucks: Trucks
     wheels: Wheels
     bearings: Bearings
@@ -63,6 +64,19 @@ class BoardBuilder extends React.Component<Props, State> {
                 link: null,
                 asin: null,
                 category: "deck"
+            },
+            griptape: {
+                id: null,
+                name: null,
+                brand: null,
+                image: null,
+                width: null,
+                length: null,
+                info: null,
+                price: null,
+                link: null,
+                asin: null,
+                category: "griptape"
             },
             trucks: {
                 id: null,
@@ -155,6 +169,7 @@ class BoardBuilder extends React.Component<Props, State> {
                 id: build.getId(),
                 isLoading: true,
                 deck: build.getDeck(),
+                griptape: build.getGriptape(),
                 trucks: build.getTrucks(),
                 wheels: build.getWheels(),
                 bearings: build.getBearings(),
@@ -170,6 +185,7 @@ class BoardBuilder extends React.Component<Props, State> {
                     id: build.id,
                     isLoading: true,
                     deck: build.deck,
+                    griptape: build.griptape,
                     trucks: build.trucks,
                     wheels: build.wheels,
                     bearings: build.bearings,
@@ -348,9 +364,13 @@ class BoardBuilder extends React.Component<Props, State> {
 
     render() {
         const components = [{
-            name: "Deck",
-            link: "/decks"
-        },
+                name: "Deck",
+                link: "/decks"
+            },
+            {
+                name: "Griptape",
+                link: "/griptape"
+            },
             {
                 name: "Trucks",
                 link: "/trucks"
@@ -377,6 +397,9 @@ class BoardBuilder extends React.Component<Props, State> {
             switch (components[i].name) {
                 case "Deck":
                     returnValue = this.state.deck.name
+                    break;
+                case "Griptape":
+                    returnValue = this.state.griptape.name
                     break;
                 case "Trucks":
                     returnValue = this.state.trucks.name

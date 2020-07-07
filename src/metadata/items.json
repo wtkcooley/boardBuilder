@@ -177,5 +177,57 @@
     "price": 19.99,
     "asin": "B008AJYRRA",
     "category": "extras"
+  },
+  {
+    "id": 15,
+    "name": "Jessup Skateboard Griptape Sheet: The Choice of pro Skaters Worldwide. Bubble Free & Easy to Apply.",
+    "brand": "Jessup",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/91bOFGUCrfL._AC_SL1500_.jpg",
+    "width": 9,
+    "length": 33,
+    "info": "Long lasting Jessup Griptape, The Original skateboard griptape provides rock solid bonding to deck surface, effortless conformability, easy trimming without tearing, and superior durability for professional use. Land all your tricks with confidence with this trusted griptape. Jessup Griptape, The Original griptape roll is made of silicon carbide grit with an aggressive adhesive designed specifically for the demands of the skateboard industry. Tough on tricks, Easy on shoes. Used by skaters the world over, Jessup Griptape, The Original skateboard griptape provides skateboarders with maximum grip for ultimate riding control in the skatepark or on the street. Solvent based adhesive sticks to any board so you can customize without limits while the high traction gives you maximum control when you need it most.",
+    "link": "https://amzn.to/2DfjGx7",
+    "price": 7.02,
+    "asin": "B0039ZN00K",
+    "category": "griptape"
+  },
+  {
+    "id": 16,
+    "name": "Jessup Skateboard Griptape Sheet: The Choice of pro Skaters Worldwide. Bubble Free & Easy to Apply.",
+    "brand": "Jessup",
+    "image": "https://m.media-amazon.com/images/I/51Ga9p3HGVL._AC_SL1000_.jpg",
+    "width": 8,
+    "length": 33,
+    "info": "Long lasting Jessup Griptape, The Original skateboard griptape provides rock solid bonding to deck surface, effortless conformability, easy trimming without tearing, and superior durability for professional use. Land all your tricks with confidence with this trusted griptape. Jessup Griptape, The Original griptape roll is made of silicon carbide grit with an aggressive adhesive designed specifically for the demands of the skateboard industry. Tough on tricks, Easy on shoes. Used by skaters the world over, Jessup Griptape, The Original skateboard griptape provides skateboarders with maximum grip for ultimate riding control in the skatepark or on the street. Solvent based adhesive sticks to any board so you can customize without limits while the high traction gives you maximum control when you need it most.",
+    "link": "https://amzn.to/2ZNumdR",
+    "price": 9.94,
+    "asin": "B01GCE5SCM",
+    "category": "griptape"
+  },
+  {
+    "id": 17,
+    "name": "Mob Grip Perforated Black Griptape - 9\" x 33\"",
+    "brand": "MOB GRIP",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/61H7JMarjeL._AC_SL1500_.jpg",
+    "width": 9,
+    "length": 33,
+    "info": "",
+    "link": "https://amzn.to/2ZZpSRR",
+    "price": 7.90,
+    "asin": "B00V0CRB2M",
+    "category": "griptape"
+  },
+  {
+    "id": 18,
+    "name": "Mob Grip Clear Grip Tape - 10\" x 33\"",
+    "brand": "MOB GRIP",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/615fzzFuegL._AC_SL1500_.jpg",
+    "width": 10,
+    "length": 33,
+    "info": "10 inches wide fits wider decks. High-strength. Waterproof. Super sticky adhesive",
+    "link": "https://amzn.to/2Z5kzkd",
+    "price": 8.25,
+    "asin": "B01GZWO8JK",
+    "category": "griptape"
   }
 ]
