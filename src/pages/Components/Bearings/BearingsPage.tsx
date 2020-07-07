@@ -146,15 +146,15 @@ class BearingsPage extends React.Component<Props, State> {
                     <div className="text-container">
                         <div className="title-container">
                             <h6>
-                                {item.name}
+                                {bearings.name}
                             </h6>
                         </div>
                         <div className="details-container">
                             <p>
-                                {item.brand}
+                                {bearings.brand}
                             </p>
                             <p>
-                                ${item.price}
+                                {bearings.price ? '$' + bearings.price.toFixed(2) : "Could not get price"}
                             </p>
                         </div>
                     </div>
@@ -194,7 +194,7 @@ class BearingsPage extends React.Component<Props, State> {
                                 {item.brand}
                             </p>
                             <h2>
-                                Price: ${item.price}
+                                Price: {item.price ? '$' + item.price.toFixed(2) : "Could not get price"}
                             </h2>
                         </div>
                         <div className="build-item-modal-button-container">

@@ -154,7 +154,7 @@ class GriptapePage extends React.Component<Props, State> {
                                 {griptape.brand}
                             </p>
                             <p>
-                                ${griptape.price}
+                                {griptape.price ? '$' + griptape.price.toFixed(2) : "Could not get price"}
                             </p>
                         </div>
                     </div>
@@ -196,7 +196,7 @@ class GriptapePage extends React.Component<Props, State> {
                             <p>Width: {item.width}"</p>
                             <p>Length: {item.length}"</p>
                             <h2>
-                                Price: ${item.price}
+                                Price: {item.price ? '$' + item.price.toFixed(2) : "Could not get price"}
                             </h2>
                         </div>
                         <div className="build-item-modal-button-container">

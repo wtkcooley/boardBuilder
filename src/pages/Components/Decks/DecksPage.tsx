@@ -77,6 +77,21 @@ class DecksPage extends React.Component<Props, State> {
         }).then(build => {
             if (build != null) {
                 let temp = build;
+                if(deck.griptape) {
+                    temp.griptape = {
+                        id: null,
+                        name: null,
+                        brand: null,
+                        image: null,
+                        width: null,
+                        length: null,
+                        info: null,
+                        price: null,
+                        link: null,
+                        asin: null,
+                        category: "griptape"
+                    }
+                }
                 temp.deck = deck;
                 return temp;
             }
@@ -154,7 +169,7 @@ class DecksPage extends React.Component<Props, State> {
                                 {deck.brand}
                             </p>
                             <p>
-                                ${deck.price}
+                                {deck.price ? '$' + deck.price.toFixed(2) : "Could not get price"}
                             </p>
                         </div>
                     </div>
@@ -196,7 +211,7 @@ class DecksPage extends React.Component<Props, State> {
                             <p>Width: {item.width}"</p>
                             <p>Length: {item.length}"</p>
                             <h2>
-                                Price: ${item.price}
+                                Price: {item.price ? '$' + item.price.toFixed(2) : "Could not get price"}
                             </h2>
                         </div>
                         <div className="build-item-modal-button-container">

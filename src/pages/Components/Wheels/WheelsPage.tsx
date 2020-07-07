@@ -154,7 +154,7 @@ class WheelsPage extends React.Component<Props, State> {
                                 {wheels.brand}
                             </p>
                             <p>
-                                ${wheels.price}
+                                {wheels.price ? '$' + wheels.price.toFixed(2) : "Could not get price"}
                             </p>
                         </div>
                     </div>
@@ -196,7 +196,7 @@ class WheelsPage extends React.Component<Props, State> {
                             <p>Diameter: {item.diameter}mm</p>
                             <p>Durometer: {item.durometer}</p>
                             <h2>
-                                Price: ${item.price}
+                                Price: {item.price ? '$' + item.price.toFixed(2) : "Could not get price"}
                             </h2>
                         </div>
                         <div className="build-item-modal-button-container">

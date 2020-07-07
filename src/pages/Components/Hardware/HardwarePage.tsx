@@ -154,7 +154,7 @@ class HardwarePage extends React.Component<Props, State> {
                                 {hardware.brand}
                             </p>
                             <p>
-                                ${hardware.price}
+                                {hardware.price ? '$' + hardware.price.toFixed(2) : "Could not get price"}
                             </p>
                         </div>
                     </div>
@@ -195,7 +195,7 @@ class HardwarePage extends React.Component<Props, State> {
                             </p>
                             <p>Length: {item.length}"</p>
                             <h2>
-                                Price: ${item.price}
+                                Price: {item.price ? '$' + item.price.toFixed(2) : "Could not get price"}
                             </h2>
                         </div>
                         <div className="build-item-modal-button-container">

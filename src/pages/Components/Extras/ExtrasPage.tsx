@@ -154,7 +154,7 @@ class ExtrasPage extends React.Component<Props, State> {
                                 {extras.brand}
                             </p>
                             <p>
-                                ${extras.price}
+                                {extras.price ? '$' + extras.price.toFixed(2) : "Could not get price"}
                             </p>
                         </div>
                     </div>
@@ -194,7 +194,7 @@ class ExtrasPage extends React.Component<Props, State> {
                                 {item.brand}
                             </p>
                             <h2>
-                                Price: ${item.price}
+                                Price: {item.price ? '$' + item.price.toFixed(2) : "Could not get price"}
                             </h2>
                         </div>
                         <div className="build-item-modal-button-container">

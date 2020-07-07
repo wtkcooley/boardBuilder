@@ -5,7 +5,7 @@ export interface Deck {
     image: string | null
     width: number | null
     length: number | null
-    'grip-tape': boolean | null
+    'griptape': boolean | null
     info: string | null
     price: number | null
     link: string | null
@@ -130,7 +130,7 @@ export class Build {
                 image: null,
                 width: null,
                 length: null,
-                'grip-tape':  null,
+                'griptape':  null,
                 info: null,
                 price: null,
                 link: null,

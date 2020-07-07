@@ -58,7 +58,7 @@ class BoardBuilder extends React.Component<Props, State> {
                 image: null,
                 width: null,
                 length: null,
-                'grip-tape': null,
+                'griptape': null,
                 info: null,
                 price: null,
                 link: null,
@@ -333,6 +333,8 @@ class BoardBuilder extends React.Component<Props, State> {
 
         if (this.state.deck.id !== null)
             currentCart.cart.push(this.state.deck)
+        if (this.state.griptape.id !== null)
+            currentCart.cart.push(this.state.griptape)
         if (this.state.trucks.id !== null)
             currentCart.cart.push(this.state.trucks)
         if (this.state.wheels.id !== null)
@@ -391,7 +393,8 @@ class BoardBuilder extends React.Component<Props, State> {
                 name: "Extras",
                 link: "/extras"
             }]
-        let items: any = []
+        let items: any = [];
+        let hasGriptape: boolean | null = null;
         for (let i = 0; i < components.length; i++) {
             let returnValue: string | null = null;
             switch (components[i].name) {
@@ -399,7 +402,10 @@ class BoardBuilder extends React.Component<Props, State> {
                     returnValue = this.state.deck.name
                     break;
                 case "Griptape":
-                    returnValue = this.state.griptape.name
+                    if (this.state.deck.griptape)
+                        returnValue = "The deck you selected comes with griptape"
+                    else
+                        returnValue = this.state.griptape.name
                     break;
                 case "Trucks":
                     returnValue = this.state.trucks.name
@@ -417,8 +423,11 @@ class BoardBuilder extends React.Component<Props, State> {
                     returnValue = this.state.extras.name
                     break;
             }
+            let isDisabled: boolean | undefined = undefined;
+            if (returnValue === "The deck you selected comes with griptape")
+                isDisabled = true
             items[i] =
-                (<IonItem routerLink={components[i].link} key={i.toString()}>
+                (<IonItem routerLink={components[i].link} disabled={isDisabled} key={i.toString()}>
                     <IonLabel className="ion-text-wrap">
                         {components[i].name}: {returnValue ? returnValue : "Not selected"}
                     </IonLabel>

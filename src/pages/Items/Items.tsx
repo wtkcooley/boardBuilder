@@ -117,7 +117,7 @@ class Items extends React.Component<Props, State> {
                                 {item.brand}
                             </p>
                             <p>
-                                ${item.price}
+                                {item.price ? '$' + item.price.toFixed(2) : "Could not get price"}
                             </p>
                         </div>
                     </div>
@@ -156,7 +156,7 @@ class Items extends React.Component<Props, State> {
                         {item.diameter ? <p>Diameter: {item.diameter}mm</p> : <></>}
                         {item.durometer ? <p>Durometer: {item.durometer}</p> : <></>}
                         <h2>
-                            Price: ${item.price}
+                            Price: {item.price ? '$' + item.price.toFixed(2) : "Could not get price"}
                         </h2>
                     </div>
                     <div className="item-modal-button-container">
